@@ -1,0 +1,89 @@
+/* Top Bar */
+.top-bar {
+    background: linear-gradient(90deg, #0D6EFD, #3687ff,#4f93f7,#77adfc,#b5e4f7, white);
+    color: white;
+    font-size: 14px;
+}
+
+
+.top-bar a {
+    color: white;
+    margin-left: 10px;
+}
+
+/* Hero Section */
+.hero-section {
+    color: #333;
+}
+#welcom{
+    margin-top: 0px;
+    gap: 3vw;
+}
+/* Why Choose Section */
+.why-choose {
+    margin-top: -120px;
+    background: white;
+}
+/* Info Box */
+.info-box {
+    background: linear-gradient(90deg, #0D6EFD, #3687ff,#4f93f7);
+    color: white;
+    border-radius: 8px;
+}
+
+/* Feature Box */
+.feature-box {
+    background: rgba(255, 255, 255, 0.5); /* 50% opacity background */
+    border-radius: 8px;
+    color: black; /* Text color stays at 100% opacity */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Optional padding for better spacing */
+}
+
+.feature-box p, .feature-box h5 {
+    opacity: 1; /* Ensures text is fully opaque */
+}
+
+.feature-box i {
+    font-size: 40px;
+    color: #0D6EFD;
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 768px) {
+    .hero-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100vh;
+    }
+
+    .hero-section .container {
+        padding: 0 20px;
+    }
+
+    #welcom{
+    margin-top: 500px;
+        gap: 10px;
+    }
+
+    .hero-section .row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-section .col-md-6 {
+        width: 100%;
+        height: auto;
+    }
+
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    .hero-section p {
+        font-size: 1rem;
+    }
+}
+

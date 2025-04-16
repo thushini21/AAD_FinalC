@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>/* General Form Styling */
+  #addServiceForm {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  #addServiceForm h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  /* Form Group Styling */
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  }
+
+  /* Textarea Specific Styling */
+  .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  /* File Input Styling */
+  .form-group input[type="file"] {
+    padding: 8px;
+    background: #f9f9f9;
+    border: 1px dashed #ccc;
+  }
+
+  .form-group small.text-muted {
+    display: block;
+    margin-top: 5px;
+    color: #777;
+    font-size: 12px;
+  }
+
+  /* Button Styling */
+  button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #357ab8;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    #addServiceForm {
+      padding: 15px;
+    }
+  }</style>
+</head>
+<body>
+<form id="addServiceForm" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="serviceName">Service Name*</label>
+    <input
+            type="text"
+            id="serviceName"
+            name="serviceName"
+            class="form-control"
+            required
+            placeholder="e.g., Bridal Makeup, Hair Styling"
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="description">Service Description*</label>
+    <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            rows="4"
+            required
+            placeholder="Describe the beauty service in detail..."
+    ></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="fixedPrice">Fixed Price (LKR)</label>
+    <input
+            type="number"
+            id="fixedPrice"
+            name="fixedPrice"
+            class="form-control"
+            step="0.01"
+            min="0"
+            placeholder="e.g., 5000.00"
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="hourlyRate">Hourly Rate (LKR/hour)</label>
+    <input
+            type="number"
+            id="hourlyRate"
+            name="hourlyRate"
+            class="form-control"
+            step="0.01"
+            min="0"
+            placeholder="e.g., 1500.00"
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="image">Service Image (Optional)</label>
+    <input
+            type="file"
+            id="image"
+            name="image"
+            class="form-control"
+            accept="image/*"
+    >
+    <small class="text-muted">Upload JPG, PNG, or SVG images showcasing the service</small>
+  </div>
+
+  <div class="form-group">
+    <label for="categoryId">Service Category*</label>
+    <select
+            id="categoryId"
+            name="categoryId"
+            class="form-control"
+            required
+    >
+      <option value="">-- Select a Beauty Category --</option>
+      <!-- Populate dynamically: e.g., Hair, Makeup, Nails, Spa, etc. -->
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary" id="addServiceBtn">Add Salon Service</button>
+</form>
+
+<script src="../js/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script>
+  $(document).ready(function() {
+  // Load categories dropdown
+  $.ajax({
+    url: 'http://localhost:8080/api/v1/categories/allIds',
+    type: 'GET',
+    dataType: 'json',
+    headers: {
+      "Authorization": "Bearer " + localStorage.getItem("token")
+    },
+    success: function(response) {
+      const categoryDropdown = $('#categoryId');
+      categoryDropdown.empty().append('<option value="">-- Select a Category --</option>');
+
+      if (response.code === 200 && Array.isArray(response.data.data)) {
+        response.data.data.forEach(function(category) {
+          categoryDropdown.append(
+                  $('<option></option>').val(category).text(category)
+          );
+        });
+      } else {
+        categoryDropdown.append('<option value="">No categories available</option>');
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error('Error loading categories:', error);
+      $('#categoryId').html(
+              '<option value="">Error loading categories</option>' +
+              '<option value="retry" onclick="window.location.reload()">↻ Retry</option>'
+      );
+    }
+  });
+
+  $("#addServiceForm").submit(async function(e) {
+    e.preventDefault();
+
+    try {
+      // Get email from token
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found in localStorage");
+      }
+
+      const decodedToken = jwt_decode(token);
+      const email = decodedToken.sub;
+      if (!email) {
+        throw new Error("Email not found in token");
+      }
+
+      // Get category ID and provider ID in parallel
+      const categoryName = $('#categoryId').val().trim();
+      if (!categoryName) {
+        throw new Error("Please select a category");
+      }
+
+      const [categoryId, providerId] = await Promise.all([
+        getCategoryIdByName(categoryName),
+        getProviderIdByEmail(email)
+      ]);
+
+      // Prepare form data
+      const formData = new FormData();
+      const serviceDTO = {
+        serviceName: $('#serviceName').val().trim(),
+        description: $('#description').val().trim(),
+        fixedPrice: $('#fixedPrice').val().trim() || null,
+        hourlyRate: $('#hourlyRate').val().trim() || null,
+        categoryId: categoryId,
+        serviceProviderId: providerId,
+      };
+
+      formData.append('serviceDTO', new Blob([JSON.stringify(serviceDTO)], {
+        type: 'application/json'
+      }));
+
+      const imageFile = $('#image')[0].files[0];
+      if (imageFile) {
+        formData.append('file', imageFile);
+      }
+
+      // Submit the form
+      $.ajax({
+        url: "http://localhost:8080/api/v1/services/add",
+        type: "POST",
+        headers: {
+          "Authorization": "Bearer " + token
+        },
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+          alert('Success! Service: ' + response.data.serviceName);
+          $('#addServiceForm')[0].reset();
+          $('#imagePreview').hide();
+        },
+        error: function(xhr) {
+          alert('Error: ' + (xhr.responseJSON?.message || 'Check console for details'));
+          console.log(xhr.responseJSON);
+        }
+      });
+
+    } catch (error) {
+      alert('Error: ' + error.message);
+      console.error(error);
+    }
+  });
+
+  // Helper functions that return Promises
+  function getCategoryIdByName(categoryName) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: 'http://localhost:8080/api/v1/categories/id-by-name',
+        type: 'GET',
+        data: { categoryName: categoryName },
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        success: function(response) {
+          resolve(response.data.data);
+        },
+        error: function(xhr) {
+          console.error('Error fetching category ID:', xhr.responseText);
+          reject(new Error('Failed to get category ID'));
+        }
+      });
+    });
+  }
+
+  function getProviderIdByEmail(email) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: 'http://localhost:8080/api/v1/users/getidbyemail',
+        type: 'GET',
+        data: { email: email },
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        success: function(response) {
+          resolve(response.data.data);
+        },
+        error: function(xhr) {
+          console.error('Error fetching provider ID:', xhr.responseText);
+          reject(new Error('Failed to get provider ID'));
+        }
+      });
+    });
+  }
+});
+</script>
+</body>
+</html>

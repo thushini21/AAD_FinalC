@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Category - Ivory Veils Salon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #c59d5f;
+      --primary-hover: #b0894e;
+      --error-color: #e63946;
+      --success-color: #52b788;
+      --text-color: #4b4b4b;
+      --light-bg: #fffaf4;
+      --border-color: #ddd;
+      --radius: 12px;
+      --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      --transition: 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text-color);
+      padding: 2rem;
+    }
+
+    .form-container {
+      background: white;
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(197, 157, 95, 0.3);
+    }
+
+    .preview-image {
+      display: block;
+      width: 100%;
+      max-height: 250px;
+      object-fit: cover;
+      margin-top: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+    }
+
+    .submit-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: bold;
+      width: 100%;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .form-container {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <h1>Add New Category</h1>
+  <form id="addCategoryForm" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="categoryName">Category Name</label>
+      <input type="text" id="categoryName" name="categoryName" required placeholder="e.g., Hair, Makeup, Facial" oninput="validateCategoryName()">
+      <div id="nameError" class="error-message"></div>
+    </div>
+    <div class="form-group">
+      <label for="categoryImage">Category Image</label>
+      <input type="file" id="categoryImage" name="categoryImage" accept="image/*" required>
+      <img id="imagePreview" class="preview-image" src="#" alt="Preview" style="display: none;">
+    </div>
+    <button type="submit" class="submit-btn">
+      <span id="submitText">Add Category</span>
+    </button>
+  </form>
+</div>
+
+<script>
+  function validateCategoryName() {
+    const name = $('#categoryName').val().trim();
+    if (name.length < 3) {
+      $('#nameError').text('Category name must be at least 3 characters.').show();
+      return false;
+    }
+    $('#nameError').hide();
+    return true;
+  }
+
+  $('#categoryImage').change(function () {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      $('#imagePreview').attr('src', e.target.result).show();
+    }
+    reader.readAsDataURL(this.files[0]);
+  });
+
+  $('#addCategoryForm').on('submit', function (e) {
+    e.preventDefault();
+    if (!validateCategoryName()) return;
+
+    const formData = new FormData();
+    const categoryDTO = {
+      categoryName: $('#categoryName').val().trim()
+    };
+
+    formData.append('categoryDTO', new Blob([JSON.stringify(categoryDTO)], {
+      type: 'application/json'
+    }));
+    formData.append('file', $('#categoryImage')[0].files[0]);
+
+    $('#submitText').text('Adding...');
+
+    $.ajax({
+      url: 'http://localhost:8080/api/v1/categories/add',
+      type: 'POST',
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      },
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (response) {
+        alert('Success! Category added: ' + response.data.categoryName);
+        $('#addCategoryForm')[0].reset();
+        $('#imagePreview').hide();
+        $('#submitText').text('Add Category');
+      },
+      error: function (xhr) {
+        alert('Error: ' + (xhr.responseJSON?.message || 'Check console'));
+        console.log(xhr.responseJSON);
+        $('#submitText').text('Add Category');
+      }
+    });
+  });
+</script>
+</body>
+</html>

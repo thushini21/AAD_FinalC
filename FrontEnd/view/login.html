@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Ivory Veils Salon</title>
+  <link rel="stylesheet" href="../css/login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container">
+    <a href="#" class="logo">Ivory Veils</a>
+    <ul class="nav-links">
+      <li><a href="#home"></a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+</nav>
+
+<!-- Login Section -->
+<section class="login-section">
+  <div class="login-container">
+    <!-- Left Side: Login Form -->
+    <div class="login-form">
+      <button class="back-btn" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <h2>Login to Your Salon Account</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="button" class="btn" onclick="login()">Login</button>
+      </form>
+      <div class="login-links">
+        <a href="#">Forgot Password?</a>
+        <p>Don't have an account? <a href="../view/customerSignUp.html">Sign Up</a></p>
+      </div>
+    </div>
+
+    <!-- Right Side: Image -->
+    <div class="login-image">
+      <img src="../images/images/logo.png" alt="Salon Login Image">
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2025 Ivory Veils. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script src="../js/login.js"></script>
+<script>
+  // Back Button Functionality
+  function goBack() {
+    window.history.back();
+  }
+</script>
+</body>
+</html>

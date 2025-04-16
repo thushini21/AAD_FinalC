@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      margin-top: 10px;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(10deg, #FFD700,#e3c10e);
+      transition: all 0.3s ease-in-out;
+      color: #000;
+      padding: 0.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-radius: 0% 0% 5% 5%;
+    }
+
+    .navbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: #000;
+    }
+
+    .navbar .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .navbar .nav-links a {
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
+      color: white;
+    }
+
+    /* Login Button */
+    .logout-btn {
+      background-color: white;
+      color: #000;
+      padding: 0.5rem 1.5rem;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #666666;
+      color: white;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* User Management Styles */
+    .user-card {
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+      margin-bottom: 20px;
+      background-color: white;
+    }
+
+    .user-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .status-badge {
+      font-size: 0.8rem;
+      padding: 0.35em 0.65em;
+    }
+
+    .filter-section {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    .empty-state i {
+      font-size: 5rem;
+      color: #dee2e6;
+      margin-bottom: 20px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 5px;
+    }
+
+    .badge-role {
+      font-size: 0.75rem;
+      padding: 0.35em 0.65em;
+    }
+
+    .badge-admin {
+      background-color: #6f42c1;
+    }
+
+    .badge-provider {
+      background-color: #20c997;
+    }
+
+    .badge-customer {
+      background-color: #fd7e14;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .navbar .logo {
+        font-size: 1rem;
+        font-weight: bold;
+        text-decoration: none;
+        color: #000;
+      }
+      .logout-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      .action-btns {
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .action-btns .btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar .logo {
+        font-size: 0.8rem;
+      }
+
+      .logout-btn {
+        padding: 0.5rem;
+        font-size: 0.6rem;
+      }
+
+      .navbar .nav-links {
+        gap: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container">
+    <a href="#" class="logo">HomeEase</a>
+    <ul class="nav-links">
+      <li><a href="../view/admindashboard.html">Home</a></li>
+      <li><a href="../view/users.html"  style="color: white">Users</a></li>
+      <li><a href="../view/services.html">Services</a></li>
+    </ul>
+    <a href="../view/profile.html" class="logout-btn">
+      <i class="fas fa-user"></i> Profile
+    </a>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">User Management</h1>
+    <div>
+      <button id="refresh-btn" class="btn btn-outline-secondary me-2">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <label for="searchInput" class="form-label">Search</label>
+        <input type="text" class="form-control" id="searchInput" placeholder="Name, email, phone">
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="role-filter" class="form-label">Role</label>
+        <select id="role-filter" class="form-select">
+          <option value="ALL">All Roles</option>
+          <option value="ADMIN">Admin</option>
+          <option value="SERVICE_PROVIDER">Service Provider</option>
+          <option value="CUSTOMER">Customer</option>
+        </select>
+      </div>
+      <div class="col-md-2 mb-3">
+        <label for="status-filter" class="form-label">Status</label>
+        <select id="status-filter" class="form-select">
+          <option value="ALL">All Statuses</option>
+          <option value="ACTIVE">Active</option>
+          <option value="INACTIVE">Inactive</option>
+        </select>
+      </div>
+      <div class="col-md-2 mb-3">
+        <label for="verification-filter" class="form-label">Verification</label>
+        <select id="verification-filter" class="form-select">
+          <option value="ALL">All</option>
+          <option value="Pending">Pending</option>
+          <option value="APPROVED">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+      <div class="col-md-2 mb-3 d-flex align-items-end">
+        <button id="apply-filters" class="btn btn-danger w-100 me-2">
+          <i class="bi bi-funnel"></i> Filter
+        </button>
+        <button id="reset-filters" class="btn btn-outline-secondary w-100">
+          <i class="bi bi-x-circle"></i> Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="users-container">
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Loading users...</p>
+    </div>
+  </div>
+
+  <div id="empty-state" class="empty-state" style="display: none;">
+    <i class="bi bi-people"></i>
+    <h4>No users found</h4>
+    <p class="text-muted">No users match your current filters</p>
+  </div>
+
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">Previous</a>
+      </li>
+      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<!-- Add/Edit User Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Add New User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="userForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="userName" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="userName" required>
+              </div>
+              <div class="mb-3">
+                <label for="userEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="userEmail" required>
+              </div>
+              <div class="mb-3">
+                <label for="userPhone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="userPhone" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="userPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="userPassword" required>
+              </div>
+              <div class="mb-3">
+                <label for="userRole" class="form-label">Role</label>
+                <select class="form-select" id="userRole" required>
+                  <option value="CUSTOMER">Customer</option>
+                  <option value="SERVICE_PROVIDER">Service Provider</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="userStatus" class="form-label">Status</label>
+                <select class="form-select" id="userStatus">
+                  <option value="ACTIVE">Active</option>
+                  <option value="INACTIVE">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="userAddress" class="form-label">Address</label>
+                <textarea class="form-control" id="userAddress" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row" id="providerFields" style="display: none;">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="serviceArea" class="form-label">Service Area</label>
+                <input type="text" class="form-control" id="serviceArea">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="idProof" class="form-label">ID Proof</label>
+                <input type="file" class="form-control" id="idProof">
+              </div>
+            </div>
+          </div>
+          <div class="row" id="adminFields" style="display: none;">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="adminLevel" class="form-label">Admin Level</label>
+                <input type="text" class="form-control" id="adminLevel">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="saveUserBtn">Save User</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Verification Documents Modal -->
+<div class="modal fade" id="docsModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Verification Documents</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-primary text-white">
+                <h6 class="mb-0">ID Proof</h6>
+              </div>
+              <div class="card-body text-center">
+                <img id="idProofImage" src=" " class="img-fluid mb-3" alt="ID Proof">
+                <a id="idProofLink" href="#" target="_blank" class="btn btn-outline-primary">
+                  <i class="bi bi-download"></i> Download
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header bg-primary text-white">
+                <h6 class="mb-0">Address Proof</h6>
+              </div>
+              <div class="card-body text-center">
+                <img id="addressProofImage" src=" " class="img-fluid mb-3" alt="Address Proof">
+                <a id="addressProofLink" href="#" target="_blank" class="btn btn-outline-primary">
+                  <i class="bi bi-download"></i> Download
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3" id="verificationActions">
+          <h6>Verification Status: <span id="currentVerificationStatus" class="badge bg-warning">Pending</span></h6>
+          <div class="d-flex justify-content-end mt-3">
+            <button type="button" class="btn btn-success me-2" id="approveVerificationBtn">
+              <i class="bi bi-check-circle"></i> Approve
+            </button>
+            <button type="button" class="btn btn-danger" id="rejectVerificationBtn">
+              <i class="bi bi-x-circle"></i> Reject
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // Base API URL - adjust this to your backend endpoint
+  const API_BASE_URL = 'http://localhost:8080/api/v1';
+
+  // JWT Token from localStorage
+  const token = localStorage.getItem('token');
+
+  // Current pagination state
+  let currentPage = 1;
+  const usersPerPage = 10;
+  let totalUsers = 0;
+  let allUsers = [];
+
+  // Current filters
+  let currentFilters = {
+    role: 'ALL',
+    status: 'ALL',
+    verification: 'ALL',
+    search: ''
+  };
+
+  // Initialize page
+  $(document).ready(function() {
+    loadUsers();
+
+    // Set up event listeners
+    $('#apply-filters').click(applyFilters);
+    $('#reset-filters').click(resetFilters);
+    $('#refresh-btn').click(refreshUsers);
+    $('#searchInput').on('keyup', debounce(searchUsers, 300));
+    $('#add-user-btn').click(showAddUserModal);
+    $('#saveUserBtn').click(saveUser);
+
+    // Pagination
+    $(document).on('click', '.page-link', function(e) {
+      e.preventDefault();
+      if ($(this).parent().hasClass('disabled')) return;
+
+      if ($(this).text().toLowerCase() === 'previous') {
+        currentPage--;
+      } else if ($(this).text().toLowerCase() === 'next') {
+        currentPage++;
+      } else {
+        currentPage = parseInt($(this).text());
+      }
+
+      loadUsers();
+    });
+  });
+
+  // Load users from API
+  function loadUsers() {
+    showLoading();
+
+    // Build query parameters
+    const params = {
+      page: currentPage,
+      limit: usersPerPage,
+      ...currentFilters
+    };
+
+    // Remove ALL filters (backend should ignore these)
+    Object.keys(params).forEach(key => {
+      if (params[key] === 'ALL') delete params[key];
+    });
+
+    $.ajax({
+      url: `${API_BASE_URL}/users`,
+      type: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      success: function(response) {
+        allUsers = response.data.data; // Store all users
+        renderUsers(allUsers); // Initially render all users
+        totalUsers = allUsers.length;
+        updatePagination();
+      },
+      error: function(xhr) {
+        showError('Failed to load users');
+        console.error('Error loading users:', xhr.responseText);
+      }
+    });
+  }
+
+  // Render users to the page
+  function renderUsers(users) {
+    const container = $('#users-container');
+
+    if (!users || users.length === 0) {
+      $('#empty-state').show();
+      container.html('');
+      return;
+    }
+
+    $('#empty-state').hide();
+
+    let html = '';
+
+    users.forEach(user => {
+      let roleBadgeClass = '';
+      if (user.role === 'ADMIN') roleBadgeClass = 'bg-primary';
+      if (user.role === 'SERVICE_PROVIDER') roleBadgeClass = 'bg-success';
+      if (user.role === 'CUSTOMER') roleBadgeClass = 'bg-warning text-dark';
+
+      let statusBadgeClass = user.status === 'Active' ? 'bg-success' : 'bg-secondary';
+      let verificationBadgeClass = '';
+      if (user.verificationStatus === 'APPROVED') verificationBadgeClass = 'bg-success';
+      if (user.verificationStatus === 'Pending') verificationBadgeClass = 'bg-warning text-dark';
+      if (user.verificationStatus === 'Rejected') verificationBadgeClass = 'bg-danger';
+
+      html += `
+        <div class="user-card p-3 mb-3">
+          <div class="row align-items-center">
+            <div class="col-md-2 d-flex align-items-center">
+              <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random" class="user-avatar">
+              <span class="fw-bold">${user.userId}</span>
+            </div>
+            <div class="col-md-3">
+              <div class="fw-bold">${user.name}</div>
+              <small class="text-muted">${user.email}</small>
+            </div>
+            <div class="col-md-2">
+              ${user.phoneNumber || 'N/A'}
+            </div>
+            <div class="col-md-1">
+              <span class="badge ${roleBadgeClass} badge-role">${user.role.replace('_', ' ')}</span>
+            </div>
+            <div class="col-md-1">
+              ${user.role === 'SERVICE_PROVIDER' ?
+              `<span class="badge ${verificationBadgeClass} status-badge">${user.verificationStatus || 'N/A'}</span>`
+              : ''}
+            </div>
+            <div class="col-md-1">
+              <span class="badge ${statusBadgeClass} status-badge">${user.status}</span>
+            </div>
+            <div class="col-md-2">
+              <div class="action-btns">
+                ${user.role === 'SERVICE_PROVIDER' ? `
+                <button class="btn btn-sm btn-outline-info" onclick="viewDocuments(${user.userId})">
+                  <i class="bi bi-file-earmark-text"></i>
+                </button>
+                ` : ''}
+                <button class="btn btn-sm btn-outline-${user.status === 'Active' ? 'danger' : 'success'}"
+                  onclick="toggleStatus(${user.userId}, '${user.status}')">
+                  <i class="bi bi-${user.status === 'Active' ? 'x-circle' : 'check-circle'}"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    container.html(html);
+  }
+
+  // Update pagination controls
+  function updatePagination() {
+    const totalPages = Math.ceil(totalUsers / usersPerPage);
+    const pagination = $('.pagination');
+    pagination.empty();
+
+    // Previous button
+    pagination.append(`
+      <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+        <a class="page-link" href="#">Previous</a>
+      </li>
+    `);
+
+    // Page numbers
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pagination.append(`
+        <li class="page-item ${i === currentPage ? 'active' : ''}">
+          <a class="page-link" href="#">${i}</a>
+        </li>
+      `);
+    }
+
+    // Next button
+    pagination.append(`
+      <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    `);
+  }
+
+  function applyFilters() {
+    currentFilters = {
+      role: $('#role-filter').val(),
+      status: $('#status-filter').val(),
+      verification: $('#verification-filter').val(),
+      search: $('#searchInput').val().trim().toLowerCase()
+    };
+
+    filterUsers();
+  }
+
+  function filterUsers() {
+    let filteredUsers = allUsers;
+
+    // Apply role filter
+    if (currentFilters.role !== 'ALL') {
+      filteredUsers = filteredUsers.filter(user =>
+              user.role === currentFilters.role
+      );
+    }
+
+    // Apply status filter
+    if (currentFilters.status !== 'ALL') {
+      filteredUsers = filteredUsers.filter(user =>
+              user.status.toUpperCase() === currentFilters.status
+      );
+    }
+
+    // Apply verification filter (only for service providers)
+    if (currentFilters.verification !== 'ALL') {
+      filteredUsers = filteredUsers.filter(user => {
+        return user.verificationStatus === currentFilters.verification;
+      });
+    }
+
+    // Apply search filter
+    if (currentFilters.search) {
+      filteredUsers = filteredUsers.filter(user =>
+              user.name.toLowerCase().includes(currentFilters.search) ||
+              user.email.toLowerCase().includes(currentFilters.search) ||
+              (user.phoneNumber && user.phoneNumber.includes(currentFilters.search))
+      );
+    }
+
+    renderUsers(filteredUsers);
+    totalUsers = filteredUsers.length;
+    updatePagination();
+  }
+
+  // Reset filters
+  function resetFilters() {
+    $('#role-filter').val('ALL');
+    $('#status-filter').val('ALL');
+    $('#verification-filter').val('ALL');
+    $('#searchInput').val('');
+    currentFilters = {
+      role: 'ALL',
+      status: 'ALL',
+      verification: 'ALL',
+      search: ''
+    };
+    renderUsers(allUsers); // Show all users again
+    totalUsers = allUsers.length;
+    updatePagination();
+  }
+
+  // Search users
+  function searchUsers() {
+    currentFilters.search = $('#searchInput').val().trim().toLowerCase();
+    filterUsers();
+  }
+
+  // Refresh users
+  function refreshUsers() {
+    loadUsers();
+  }
+
+  // Show loading state
+  function showLoading() {
+    $('#users-container').html(`
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading users...</p>
+      </div>
+    `);
+  }
+
+  // Show error message
+  function showError(message) {
+    $('#users-container').html(`
+      <div class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle"></i> ${message}
+      </div>
+    `);
+  }
+
+  // Debounce function for search
+  function debounce(func, wait) {
+    let timeout;
+    return function() {
+      const context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+  }
+
+  // User CRUD Operations
+  function editUser(userId) {
+    console.log("fgfgfsgfgfghfdhfd",userId)
+    $.ajax({
+      url: `${API_BASE_URL}/users/${userId}`,
+      type: 'GET',
+      success: function(res) {
+     const user =  res.data.data;
+
+        $('#modalTitle').text('Edit User');
+        $('#userId').val(user.userId);
+        $('#userName').val(user.name);
+        $('#userEmail').val(user.email);
+        $('#userPhone').val(user.phoneNumber);
+        $('#userAddress').val(user.address);
+        $('#userRole').val(user.role);
+        $('#userStatus').val(user.status);
+        $('#verificationStatus').val(user.verificationStatus);
+
+        if (user.role === 'SERVICE_PROVIDER') {
+          $('#serviceArea').val(user.serviceArea || '');
+        }
+        if (user.role === 'ADMIN') {
+          $('#adminLevel').val(user.adminLevel || '');
+        }
+
+        $('#userRole').trigger('change');
+
+        const modal = new bootstrap.Modal($('#userModal')[0]);
+        modal.show();
+      },
+      error: function(xhr) {
+        showError('Failed to load user details');
+        console.error('Error loading user:', xhr.responseText);
+      }
+    });
+  }
+
+  function showAddUserModal() {
+    $('#modalTitle').text('Add New User');
+    $('#userForm')[0].reset();
+    $('#userRole').trigger('change');
+
+    const modal = new bootstrap.Modal($('#userModal')[0]);
+    modal.show();
+  }
+
+  function saveUser() {
+    const userId = $('#userId').val();
+    const isEdit = !!userId;
+    const url = isEdit ? `${API_BASE_URL}/users/${userId}` : `${API_BASE_URL}/users`;
+    const method = isEdit ? 'PUT' : 'POST';
+
+    const userData = {
+      name: $('#userName').val(),
+      email: $('#userEmail').val(),
+      phoneNumber: $('#userPhone').val(),
+      address: $('#userAddress').val(),
+      role: $('#userRole').val(),
+      status: $('#userStatus').val(),
+      verificationStatus: $('#verificationStatus').val()
+    };
+
+    // Add role-specific fields
+    if (userData.role === 'SERVICE_PROVIDER') {
+      userData.serviceArea = $('#serviceArea').val();
+    }
+    if (userData.role === 'ADMIN') {
+      userData.adminLevel = $('#adminLevel').val();
+    }
+
+    // Only include password for new users
+    if (!isEdit) {
+      userData.password = $('#userPassword').val();
+    }
+
+    $.ajax({
+      url: url,
+      type: method,
+      data: JSON.stringify(userData),
+      contentType: 'application/json',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      success: function() {
+        $('#userModal').modal('hide');
+        loadUsers();
+      },
+      error: function(xhr) {
+        showError(isEdit ? 'Failed to update user' : 'Failed to create user');
+        console.error('Error saving user:', xhr.responseText);
+      }
+    });
+  }
+
+  function toggleStatus(userId, currentStatus) {
+    const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
+
+    if (!confirm(`Are you sure you want to ${newStatus === 'Active' ? 'activate' : 'deactivate'} this user?`)) {
+      return;
+    }
+
+    $.ajax({
+      url: `${API_BASE_URL}/users/${userId}/status`,
+      type: 'PATCH',
+      data: JSON.stringify({ status: newStatus }),
+      contentType: 'application/json',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      success: function() {
+        loadUsers();
+      },
+      error: function(xhr) {
+        showError('Failed to update user status');
+        console.error('Error updating status:', xhr.responseText);
+      }
+    });
+  }
+
+  function viewDocuments(userId) {
+    $.ajax({
+      url: `${API_BASE_URL}/users/${userId}/documents`,
+      type: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      success: function(response) {
+        if (response.code === 200) {
+          const docs = response.data.data;
+
+          // Set document paths
+          $('#idProofImage').attr('src', 'uploads/' + (docs.idProofPath || 'default.jpg'));
+          $('#addressProofImage').attr('src', 'uploads/' + (docs.addressProofPath || 'default.jpg'));
+          $('#idProofLink').attr('href', 'uploads/' + (docs.idProofPath || '#'));
+          $('#addressProofLink').attr('href', 'uploads/' + (docs.addressProofPath || '#'));
+
+          // Set verification status
+          $('#currentVerificationStatus').text(docs.verificationStatus);
+          $('#currentVerificationStatus').removeClass('bg-warning bg-success bg-danger')
+                  .addClass(docs.verificationStatus === 'Approved' ? 'bg-success' :
+                          docs.verificationStatus === 'Rejected' ? 'bg-danger' : 'bg-warning');
+
+          // Store user ID
+          $('#docsModal').data('userId', userId);
+
+          // Show modal
+          const modal = new bootstrap.Modal($('#docsModal')[0]);
+          modal.show();
+        } else {
+          showError(response.message);
+        }
+      },
+      error: function(xhr) {
+        showError('Failed to load user documents');
+        console.error('Error loading documents:', xhr.responseText);
+      }
+    });
+  }
+  // Verification actions
+  $('#approveVerificationBtn').click(function() {
+    updateVerification('APPROVED');
+  });
+
+  $('#rejectVerificationBtn').click(function() {
+    updateVerification('REJECTED');
+  });
+
+  function updateVerification(status) {
+    const userId = $('#docsModal').data('userId');
+
+    // Build URL with query parameters
+    let url = `${API_BASE_URL}/users/${userId}/verification?status=${status}`;
+
+    $.ajax({
+      url: url,
+      type: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      success: function(response) {
+        if (response.code === 200) {
+          $('#docsModal').modal('hide');
+          loadUsers();
+        } else {
+          showError(response.message);
+        }
+      },
+      error: function(xhr) {
+        showError(xhr.responseJSON?.message || 'Failed to update verification status');
+        console.error('Error updating verification:', xhr.responseText);
+      }
+    });
+
+  }
+</script>
+</body>
+</html>

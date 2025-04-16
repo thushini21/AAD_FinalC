@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - HomeEase</title>
+  <link rel="stylesheet" href="../css/admindashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container">
+    <a href="#" class="logo">Ivory_Veils [Admin]</a>
+    <ul class="nav-links">
+      <li><a href="#home" style="color: white">Home</a></li>
+      <li><a href="../view/users.html">Users</a></li>
+      <li><a href="../view/services.html">Services</a></li>
+    </ul>
+    <a href="../view/profile.html" class="logout-btn">
+      <i class="fas fa-user"></i> Profile    </a>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+</nav>
+
+<!-- Welcome Section -->
+<section class="welcome-section">
+  <h1>Welcome, Administrator!</h1>
+  <p>Manage the platform, monitor activities, and ensure smooth operations.</p>
+</section>
+
+<!-- Stats Overview Section -->
+<section class="stats-section">
+  <h2>Platform Overview</h2>
+  <div class="stats-grid">
+    <!-- Stat Card 1 -->
+    <div class="stat-card">
+      <i class="fas fa-users"></i>
+      <h3>Total Users</h3>
+      <p class="stat-number">1,245</p>
+      <p class="stat-change"><i class="fas fa-arrow-up"></i> 12% this month</p>
+    </div>
+    <!-- Stat Card 2 -->
+    <div class="stat-card">
+      <i class="fas fa-tools"></i>
+      <h3>Managers</h3>
+      <p class="stat-number">328</p>
+      <p class="stat-change"><i class="fas fa-arrow-up"></i> 8% this month</p>
+    </div>
+    <!-- Stat Card 3 -->
+    <div class="stat-card">
+      <i class="fas fa-calendar-check"></i>
+      <h3>Bookings</h3>
+      <p class="stat-number">567</p>
+      <p class="stat-change"><i class="fas fa-arrow-up"></i> 15% this month</p>
+    </div>
+    <!-- Stat Card 4 -->
+    <div class="stat-card">
+      <i class="fas fa-dollar-sign"></i>
+      <h3>Revenue</h3>
+      <p class="stat-number">$24,890</p>
+      <p class="stat-change"><i class="fas fa-arrow-up"></i> 22% this month</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- Quick Actions Section -->
+<section class="actions-section">
+  <h2>Quick Actions</h2>
+  <div class="actions-grid">
+    <button class="action-btn">
+      <i class="fas fa-user-plus"></i> Add New User
+    </button>
+    <button class="action-btn">
+      <i class="fas fa-tools"></i> Verify Manager
+    </button>
+    <button class="action-btn">
+      <i class="fas fa-file-invoice-dollar"></i> Generate Report
+    </button>
+    <button class="action-btn">
+      <i class="fas fa-cog"></i> System Settings
+    </button>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>&copy; 2023 Ivory_Veils Admin. All rights reserved.</p>
+  <div class="social-links">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+  </div>
+</footer>
+
+<script src="../js/jquery-3.7.1.min.js"></script>
+<script src="../js/admindashboard.js"></script>
+</body>
+</html>

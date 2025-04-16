@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome To Ivory Veils</title>
+    <link rel="stylesheet" href="../css/Styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="container">
+        <a href="#" class="logo">Ivory_Veils</a>
+        <a href="" >
+        </a>
+        <a href="" >
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home" style="color: white">Home</a></li>
+            <li><a href="../view/services.html">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="../view/login.html" class="login-btn">
+            <i class="fas fa-user"></i> Login <!-- Login icon and text -->
+        </a>
+        <!-- Role Selection Toggle -->
+        <div class="role-toggle">
+            <label class="switch">
+                <input type="checkbox" id="roleToggle">
+                <span class="slider"></span>
+            </label>
+            <span id="roleLabel">Customer</span>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+</nav>
+
+<!-- Popup Modal for Provider Login -->
+<div id="providerLoginModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Manager Login</h2>
+        <!-- Update your modal form to remove the onclick handler -->
+        <form id="providerLoginForm">
+            <div class="form-group">
+                <label for="providerEmail">Email</label>
+                <input type="email" id="providerEmail" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="providerPassword">Password</label>
+                <input type="password" id="providerPassword" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <div class="login-links">
+            <a href="#">Forgot Password?</a>
+            <p>Don't have an account? <a href="../view/managerSignUp.html">Sign Up</a></p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="container" id="home_container">
+        <h1>Welcome To Ivory Veils</h1>
+        <p>Your beauty journey starts here – with passion, care, and expertise.</p>
+        <a href="#services" class="btn">Explore Services</a>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services" id="services">
+    <div class="container">
+        <h2>Our Services</h2>
+        <div class="service-grid">
+            <!-- Service 1: Appointment Booking -->
+            <div class="service-card">
+                <i class="fas fa-calendar-check"></i>
+                <h3>Appointment Booking</h3>
+                <p>Book your beauty appointments easily online at your convenience.</p>
+            </div>
+
+            <!-- Service 2: Premium Treatments -->
+            <div class="service-card">
+                <i class="fas fa-magic"></i>
+                <h3>Premium Treatments</h3>
+                <p>Choose from a wide range of luxurious beauty and spa services tailored to you.</p>
+            </div>
+
+            <!-- Service 3: Expert Stylists -->
+            <div class="service-card">
+                <i class="fas fa-user-tie"></i>
+                <h3>Expert Stylists</h3>
+                <p>Our skilled professionals are here to enhance your beauty with care and precision.</p>
+            </div>
+
+            <!-- Service 4: Client Feedback -->
+            <div class="service-card">
+                <i class="fas fa-star"></i>
+                <h3>Client Feedback</h3>
+                <p>See what our satisfied clients have to say and share your own experience with us.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- About Us Section -->
+<section class="about-us" id="about">
+    <div class="container">
+        <h2>About Us</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Who We Are</h3>
+                <p>
+                    At Ivory Veils, we are a team of dedicated beauty professionals passionate about helping you look and feel your best.
+                    Our salon is a sanctuary where elegance meets expertise, offering a range of personalized treatments in a luxurious setting.
+                </p>
+                <h3>Our Mission</h3>
+                <p>
+                    We believe in enhancing natural beauty through exceptional service and a relaxing experience.
+                    Whether you're visiting for a simple touch-up or a full makeover, our mission is to provide you with care, comfort, and confidence.
+                </p>
+                <h3>Our Values</h3>
+                <ul>
+                    <li><strong>Elegance:</strong> Delivering beauty with grace, sophistication, and attention to detail.</li>
+                    <li><strong>Care:</strong> Creating a warm, welcoming environment where every client feels valued.</li>
+                    <li><strong>Expertise:</strong> Our professionals are skilled in the latest trends, tools, and techniques.</li>
+                    <li><strong>Trust:</strong> We build lasting relationships through consistency, quality, and genuine service.</li>
+                </ul>
+            </div>
+            <div class="about-image">
+                <img src="../images/images/logo.png" alt="Ivory Veils Salon">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials" id="testimonials">
+    <div class="container">
+        <h2>What Our Clients Say</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p>"Ivory Veils gave me the best facial I've ever had. My skin feels so refreshed and glowing. Totally worth it!"</p>
+                <div class="customer">
+                    <img src="../images/images/facial3.jpg" alt="Client 1">
+                    <h4>Amaya Perera</h4>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p>"Absolutely loved my haircut and color! The stylist was super professional and friendly. I’ll be back for sure."</p>
+                <div class="customer">
+                    <img src="../images/images/hair2.jpg" alt="Client 2">
+                    <h4>Naduni Silva</h4>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p>"The bridal package was amazing! Ivory Veils made me feel like a queen on my big day. Thank you for everything!"</p>
+                <div class="customer">
+                    <img src="../images/images/bride7.jpg" alt="Client 3">
+                    <h4>Dinithi Jayasuriya</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Contact Section -->
+<section class="contact-section" id="contact">
+    <div class="container">
+        <h2>Contact Us</h2>
+        <div class="contact-content">
+            <!-- Left Side: Contact Form -->
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+
+            <!-- Right Side: Contact Details and Map -->
+            <div class="contact-details">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <p>We'd love to hear from you! Reach out to us for any inquiries or feedback.</p>
+                    <ul>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Pelawatta ROd , Battaramull , Colombo</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>074_0113685</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@ivoryveils.com</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="map">
+                    <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.8354345093747!2d144.9537353153166!3d-37.816279742021665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d2a6c8f4f4b5!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sus!4v1633033226787!5m2!1sen!2sus"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2023 Ivory_Veils. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script src="../js/jquery-3.7.1.min.js"></script>
+<script src="../js/script.js"></script>
+</body>
+</html>
