@@ -1,5 +1,6 @@
 package com.example.salooniveryvells.Service.Impl;
 
+
 import com.example.salooniveryvells.Advisor.ResourceNotFoundException;
 import com.example.salooniveryvells.Dto.PaymentDTO;
 import com.example.salooniveryvells.Dto.ResponseDTO;
@@ -17,7 +18,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class PaymentServiceImpl  implements PaymentService {
+public class PaymentServiceImpl implements PaymentService {
+
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -110,4 +112,3 @@ public class PaymentServiceImpl  implements PaymentService {
         return new ResponseDTO(200, "Payment deleted successfully", null);
     }
 }
-

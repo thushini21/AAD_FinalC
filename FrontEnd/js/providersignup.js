@@ -22,7 +22,7 @@ function providerregister() {
         email: email,
         name: name,
         password: password,
-        role: 'SERVICE_PROVIDER',
+        role: 'MANAGER',
         phoneNumber: phone,
         address: address
     };

@@ -33,15 +33,15 @@ $(document).ready(function() {
             },
             {
                 id: 1255,
-                activity: "Provider registration",
-                user: "newprovider@example.com",
+                activity: "Managerregistration",
+                user: "newmanager@example.com",
                 time: "25 mins ago",
                 status: "approved"
             },
             {
                 id: 1254,
                 activity: "Service completed",
-                user: "provider@example.com",
+                user: "manager@example.com",
                 time: "1 hour ago",
                 status: "completed"
             },

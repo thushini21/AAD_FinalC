@@ -6,26 +6,158 @@
   <title>Ivory Veils Salon - Services</title>
   <link rel="stylesheet" href="../css/service.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #fdfaf6;
+      color: #4b3e2e;
+    }
+
+    .navbar {
+      background: linear-gradient(10deg, #c8ad7f, #a1866f);
+      padding: 0.7rem 0;
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-radius: 0 0 15px 15px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .search-section {
+      padding: 2rem 0;
+    }
+
+    .search-container {
+      background-color: #fffaf0;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .section-title {
+      font-size: 2rem;
+      color: #a1866f;
+    }
+
+    .add-btn {
+      background-color: #a1866f;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+
+    .add-btn:hover {
+      background-color: #8c7159;
+    }
+
+    .service-section {
+      background-color: #fff;
+      padding: 2rem 0;
+      border-top: 2px solid #eee0d0;
+    }
+
+    .service-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 1rem;
+    }
+
+    .category-section {
+      padding: 1rem 0;
+    }
+
+    .category-container {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .category-wrapper {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+    }
+
+    .scroll-btn {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #a1866f;
+    }
+
+    .footer {
+      background-color: #4b3e2e;
+      color: #fffaf0;
+      padding: 1rem 0;
+      text-align: center;
+    }
+
+    .footer .social-links a {
+      color: #fffaf0;
+      margin: 0 10px;
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+
+    .footer .social-links a:hover {
+      color: #c8ad7f;
+    }
+
+    .search-form input,
+    .search-form select {
+      border: 1px solid #d6cfc2;
+      padding: 0.5rem;
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    .search-button, .apply-filters-btn {
+      background-color: #a1866f;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .search-button:hover, .apply-filters-btn:hover {
+      background-color: #8c7159;
+    }
+  </style>
 </head>
 <body>
 
 <!-- Navbar -->
 <nav class="navbar">
   <div class="container">
-    <!-- Dynamic Navbar via JS -->
+    <h1 style="margin: 0; font-family: cursive;">Ivory Veils Salon</h1>
   </div>
 </nav>
 
 <!-- Search Section -->
 <section class="search-section">
   <div class="container">
-    <div class="search-container" style="background: mintcream">
+    <div class="search-container">
       <form class="search-form">
         <div class="search-row">
           <div class="search-field location-field">
-            <label for="location">
-              <i class="fas fa-map-marker-alt"></i>
-            </label>
+            <label for="location"><i class="fas fa-map-marker-alt"></i></label>
             <select id="location" name="location">
               <option value="all">All Branches</option>
               <option value="colombo">Colombo</option>
@@ -36,16 +168,12 @@
           </div>
 
           <div class="search-field keyword-field">
-            <label for="keyword">
-              <i class="fas fa-search"></i>
-            </label>
+            <label for="keyword"><i class="fas fa-search"></i></label>
             <input type="text" id="keyword" name="keyword" placeholder="Search for hair, makeup, etc.">
           </div>
 
           <div class="search-field category-field">
-            <label for="category">
-              <i class="fas fa-tags"></i>
-            </label>
+            <label for="category"><i class="fas fa-tags"></i></label>
             <select id="category" name="category">
               <option value="all">All Services</option>
               <option value="1">Hair Styling</option>
@@ -61,30 +189,24 @@
         </div>
 
         <div class="advanced-filters">
-          <div class="filter-toggle">
-            <i class="fas fa-sliders-h"></i> Advanced Filters
-          </div>
+          <div class="filter-toggle"><i class="fas fa-sliders-h"></i> Advanced Filters</div>
 
           <div class="filter-options">
             <div class="filter-group">
               <h4>Price Range</h4>
-              <div class="range-slider">
-                <input type="range" min="0" max="10000" value="5000" class="price-slider" id="priceRange">
-                <div class="range-values">
-                  <span>Rs. 0</span>
-                  <span id="priceValue">Rs. 5000</span>
-                  <span>Rs. 10,000+</span>
-                </div>
+              <input type="range" min="0" max="10000" value="5000" class="price-slider" id="priceRange">
+              <div class="range-values">
+                <span>Rs. 0</span>
+                <span id="priceValue">Rs. 5000</span>
+                <span>Rs. 10,000+</span>
               </div>
             </div>
 
             <div class="filter-group">
               <h4>Rating</h4>
-              <div class="rating-options">
-                <label><input type="checkbox" value="5"> <i class="fas fa-star"></i> 5 Stars</label>
-                <label><input type="checkbox" value="4"> <i class="fas fa-star"></i> 4+ Stars</label>
-                <label><input type="checkbox" value="3"> <i class="fas fa-star"></i> 3+ Stars</label>
-              </div>
+              <label><input type="checkbox" value="5"> <i class="fas fa-star"></i> 5 Stars</label>
+              <label><input type="checkbox" value="4"> <i class="fas fa-star"></i> 4+ Stars</label>
+              <label><input type="checkbox" value="3"> <i class="fas fa-star"></i> 3+ Stars</label>
             </div>
 
             <div class="filter-group">
@@ -104,28 +226,28 @@
 
 <!-- Category Section -->
 <section class="category-section">
-  <div class="category-container">
-    <button class="add-btn" id="addCategoryBtn">Add Category</button>
-    <button class="scroll-btn scroll-left" id="scrollLeft">
-      <i class="fas fa-chevron-left"></i>
-    </button>
+  <div class="container category-container">
+    <button class="add-btn" id="addCategoryBtn">Add Service Category</button>
+    <button class="scroll-btn scroll-left" id="scrollLeft"><i class="fas fa-chevron-left"></i></button>
     <div class="category-wrapper" id="categoryWrapper">
       <!-- Categories loaded via JS -->
     </div>
-    <button class="scroll-btn scroll-right" id="scrollRight">
-      <i class="fas fa-chevron-right"></i>
-    </button>
+    <button class="scroll-btn scroll-right" id="scrollRight"><i class="fas fa-chevron-right"></i></button>
   </div>
 </section>
 
 <!-- Add Service Button -->
-<button class="add-btn" style="margin-left: 7vw" id="addServiceBtn">Add Service</button>
+<div class="container">
+  <button class="add-btn" id="addServiceBtn">Add New Service</button>
+</div>
 
 <!-- Service Display -->
 <section class="service-section">
-  <h2 class="section-title" id="serviceTitle" style="margin-left: 1vw">Salon Services</h2>
-  <div class="service-container" id="serviceContainer">
-    <!-- Services loaded via JavaScript -->
+  <div class="container">
+    <h2 class="section-title" id="serviceTitle">Salon Services</h2>
+    <div class="service-container" id="serviceContainer">
+      <!-- Services loaded via JavaScript -->
+    </div>
   </div>
 </section>
 
@@ -147,6 +269,7 @@
 </body>
 </html>
 
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     renderNavbar();
@@ -163,7 +286,7 @@
     if (!token) {
       // Render the logged-out navbar
       navbarContainer.innerHTML = `
-      <a href="#" class="logo">HomeEase</a>
+      <a href="#" class="logo">Ivory_Veils</a>
       <ul class="nav-links">
         <li><a href="../view/index.html">Home</a></li>
         <li><a href="../view/services.html">Services</a></li>
@@ -187,7 +310,7 @@
         if (userRole === 'ADMIN') {
           navbarContainer.innerHTML = `
 
-    <a href="#" class="logo">HomeEase [Admin]</a>
+    <a href="#" class="logo">Ivory_Veils [Admin]</a>
     <ul class="nav-links">
       <li><a href="../view/admindashboard.html">Home</a></li>
       <li><a href="../view/users.html">Users</a></li>
@@ -203,7 +326,7 @@
         }else{
           // Render the logged-in navbar
           navbarContainer.innerHTML = `
-      <a href="#" class="logo">HomeEase</a>
+      <a href="#" class="logo">Ivory_Veils</a>
       <ul class="nav-links">
         <li><a href="#" onclick="navigateHome()">Home</a></li>
         <li><a href="../view/services.html">Services</a></li>
@@ -267,7 +390,7 @@
       // Redirect based on role
       if (userRole === 'CUSTOMER') {
         window.location.href = '../view/index.html';
-      } else if (userRole === 'SERVICE_PROVIDER') {
+      } else if (userRole === 'MANAGER') {
         window.location.href = 'managerdashboard.html';
       } else {
         // Default fallback if role isn't recognized
@@ -307,7 +430,7 @@
         console.log("Decoded Token:", decodedToken);
         console.log("User Role:", role);
 
-        if (role === "SERVICE_PROVIDER") {
+        if (role === "MANAGER") {
           console.log("User is a Service Provider");
           document.getElementById("addCategoryBtn").style.display = "none";
         } else if (role === "CUSTOMER") {

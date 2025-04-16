@@ -13,8 +13,8 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      background-color: #f9f9f9;
-      color: #333;
+      background-color: #fdf7f2; /* Light brownish background */
+      color: #4e342e; /* Deep brown text */
     }
 
     .container {
@@ -26,9 +26,9 @@
 
     /* Navbar */
     .navbar {
-      background: linear-gradient(10deg, #FFD700,#e3c10e);
+      background: linear-gradient(10deg, #a1887f, #6d4c41); /* Brown gradient */
       transition: all 0.3s ease-in-out;
-      color: #000;
+      color: #fff;
       padding: 0.5rem 0;
       position: sticky;
       top: 0;
@@ -46,7 +46,7 @@
       font-size: 1.5rem;
       font-weight: bold;
       text-decoration: none;
-      color: #000;
+      color: #fff;
     }
 
     .navbar .nav-links {
@@ -56,7 +56,7 @@
     }
 
     .navbar .nav-links a {
-      color: #000;
+      color: #fff;
       text-decoration: none;
       font-weight: bold;
       font-size: 1rem;
@@ -64,13 +64,13 @@
     }
 
     .navbar .nav-links a:hover {
-      color: white;
+      color: #d7ccc8; /* Lighter brown on hover */
     }
 
     /* Login Button */
     .logout-btn {
-      background-color: white;
-      color: #000;
+      background-color: #d7ccc8; /* Light brown */
+      color: #4e342e;
       padding: 0.5rem 1.5rem;
       text-decoration: none;
       border-radius: 5px;
@@ -80,7 +80,7 @@
     }
 
     .logout-btn:hover {
-      background-color: #666666;
+      background-color: #5d4037;
       color: white;
     }
 
@@ -93,7 +93,7 @@
     /* User Management Styles */
     .user-card {
       border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px rgba(93, 64, 55, 0.1);
       transition: transform 0.2s;
       margin-bottom: 20px;
       background-color: white;
@@ -111,7 +111,7 @@
     .filter-section {
       background-color: white;
       border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 4px rgba(93, 64, 55, 0.05);
       padding: 20px;
       margin-bottom: 30px;
     }
@@ -123,7 +123,7 @@
 
     .empty-state i {
       font-size: 5rem;
-      color: #dee2e6;
+      color: #d7ccc8;
       margin-bottom: 20px;
     }
 
@@ -146,15 +146,15 @@
     }
 
     .badge-admin {
-      background-color: #6f42c1;
+      background-color: #4e342e;
     }
 
     .badge-provider {
-      background-color: #20c997;
+      background-color: #8d6e63;
     }
 
     .badge-customer {
-      background-color: #fd7e14;
+      background-color: #a1887f;
     }
 
     /* Responsive adjustments */
@@ -163,7 +163,7 @@
         font-size: 1rem;
         font-weight: bold;
         text-decoration: none;
-        color: #000;
+        color: #fff;
       }
       .logout-btn {
         padding: 0.5rem 1rem;
@@ -195,12 +195,13 @@
       }
     }
   </style>
+
 </head>
 <body>
 <!-- Navbar -->
 <nav class="navbar">
   <div class="container">
-    <a href="#" class="logo">HomeEase</a>
+    <a href="#" class="logo">Ivory_Veils</a>
     <ul class="nav-links">
       <li><a href="../view/admindashboard.html">Home</a></li>
       <li><a href="../view/users.html"  style="color: white">Users</a></li>

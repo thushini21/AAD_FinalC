@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "payments")
 public class Payment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int paymentId;
@@ -31,4 +32,3 @@ public class Payment {
     @Column(name = "payment_date", nullable = false)
     private LocalDateTime paymentDate; // Date and time of payment
 }
-

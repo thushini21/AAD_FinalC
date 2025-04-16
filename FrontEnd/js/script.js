@@ -16,7 +16,7 @@ const providerLoginForm = document.getElementById('providerLoginForm');
 // Toggle between customer and provider
 roleToggle.addEventListener('change', function() {
     if (this.checked) {
-        roleLabel.textContent = 'Provider';
+        roleLabel.textContent = 'Manager';
         providerLoginModal.style.display = 'flex';
     } else {
         roleLabel.textContent = 'Customer';
@@ -73,8 +73,8 @@ function login() {
                 const role = decodedToken.role;
 
                 switch(role) {
-                    case "SERVICE_PROVIDER":
-                        window.location.href = "../view/providerdashboard.html";
+                    case "MANAGER":
+                        window.location.href = "../view/managerdashboard.html";
                         break;
                     case "CUSTOMER":
                         window.location.href = "../view/customerdashboard.html";
