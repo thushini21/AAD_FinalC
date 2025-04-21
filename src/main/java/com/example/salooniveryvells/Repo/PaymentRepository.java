@@ -1,6 +1,5 @@
 package com.example.salooniveryvells.Repo;
 
-
 import com.example.salooniveryvells.Entity.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

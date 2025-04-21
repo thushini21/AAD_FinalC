@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, Integer> {
+    // Custom query methods can be added here
     List<Service> findByCategory_CategoryId(int categoryId); // Find services by category ID
     List<Service> findByServiceProvider_UserId(int serviceProviderId); // Find services by service provider ID
 

@@ -1,6 +1,6 @@
 package com.example.salooniveryvells.Entity;
 
-import com.example.salooniveryvells.Enum.UserRole;
+import com.example.salooniveryvells.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
@@ -25,7 +26,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole role; // Role of the user (CUSTOMER, MANAGER, ADMIN)
+    private UserRole role; // Role of the user (CUSTOMER, SERVICE_PROVIDER, ADMIN)
 
     @Column(nullable = false)
     private String phoneNumber;
@@ -53,6 +54,10 @@ public class User {
     @Column(name = "address_proof_path", nullable = true) // Optional for all users
     private String addressProofPath;
 
+    // --- Relationships ---
     @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Service> services;  // Services offered by this provider
+
+    @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Product> products;  // Products added by this provider
 }

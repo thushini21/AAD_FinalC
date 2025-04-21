@@ -1,219 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ivory Veils Salon - Services</title>
-  <link rel="stylesheet" href="../css/service.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      background-color: #fdfaf6;
-      color: #4b3e2e;
-    }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services Page</title>
+  <link rel="stylesheet" href="../css/service.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
 
-    .navbar {
-      background: linear-gradient(10deg, #c8ad7f, #a1866f);
-      padding: 0.7rem 0;
-      color: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-radius: 0 0 15px 15px;
-    }
 
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .search-section {
-      padding: 2rem 0;
-    }
-
-    .search-container {
-      background-color: #fffaf0;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-
-    .section-title {
-      font-size: 2rem;
-      color: #a1866f;
-    }
-
-    .add-btn {
-      background-color: #a1866f;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      margin: 1rem 0;
-    }
-
-    .add-btn:hover {
-      background-color: #8c7159;
-    }
-
-    .service-section {
-      background-color: #fff;
-      padding: 2rem 0;
-      border-top: 2px solid #eee0d0;
-    }
-
-    .service-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 1rem;
-    }
-
-    .category-section {
-      padding: 1rem 0;
-    }
-
-    .category-container {
-      display: flex;
-      align-items: center;
-      position: relative;
-    }
-
-    .category-wrapper {
-      display: flex;
-      overflow-x: auto;
-      gap: 15px;
-    }
-
-    .scroll-btn {
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: #a1866f;
-    }
-
-    .footer {
-      background-color: #4b3e2e;
-      color: #fffaf0;
-      padding: 1rem 0;
-      text-align: center;
-    }
-
-    .footer .social-links a {
-      color: #fffaf0;
-      margin: 0 10px;
-      font-size: 1.2rem;
-      text-decoration: none;
-    }
-
-    .footer .social-links a:hover {
-      color: #c8ad7f;
-    }
-
-    .search-form input,
-    .search-form select {
-      border: 1px solid #d6cfc2;
-      padding: 0.5rem;
-      border-radius: 5px;
-      width: 100%;
-    }
-
-    .search-button, .apply-filters-btn {
-      background-color: #a1866f;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .search-button:hover, .apply-filters-btn:hover {
-      background-color: #8c7159;
-    }
-  </style>
 </head>
 <body>
-
 <!-- Navbar -->
+<!--<nav class="navbar">
+  <div class="container">
+    <a href="#" class="logo">HomeEase</a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="navigateHome()">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      </li><li><a href="../view/mybookings.html">Bookings</a></li>
+      </li><li><a href="../view/services.html">Notifications</a></li>
+    </ul>
+    <a href="#profile" class="logout-btn">
+      <i class="fas fa-user"></i> Profile &lt;!&ndash; Login icon and text &ndash;&gt;
+    </a>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+</nav>-->
+<!-- Navbar (will be populated by JavaScript) -->
 <nav class="navbar">
   <div class="container">
-    <h1 style="margin: 0; font-family: cursive;">Ivory Veils Salon</h1>
+    <!-- Content will be inserted here by renderNavbar() -->
   </div>
 </nav>
 
-<!-- Search Section -->
+<!-- Search Section - Add this right after the navbar and before the category section -->
 <section class="search-section">
   <div class="container">
-    <div class="search-container">
-      <form class="search-form">
+    <div class="search-container" style="background: mintcream">
+      <form class="search-form" >
         <div class="search-row">
           <div class="search-field location-field">
-            <label for="location"><i class="fas fa-map-marker-alt"></i></label>
+            <label for="location">
+              <i class="fas fa-map-marker-alt"></i>
+            </label>
             <select id="location" name="location">
-              <option value="all">All Branches</option>
-              <option value="colombo">Colombo</option>
-              <option value="maharagama">Maharagama</option>
-              <option value="kandy">Kandy</option>
-              <option value="galle">Galle</option>
+              <option value="all">All Locations</option>
+              <option value="new-york">New York</option>
+              <option value="los-angeles">Los Angeles</option>
+              <option value="chicago">Chicago</option>
+              <option value="houston">Houston</option>
+              <option value="miami">Miami</option>
             </select>
           </div>
 
           <div class="search-field keyword-field">
-            <label for="keyword"><i class="fas fa-search"></i></label>
-            <input type="text" id="keyword" name="keyword" placeholder="Search for hair, makeup, etc.">
+            <label for="keyword">
+              <i class="fas fa-search"></i>
+            </label>
+            <input type="text" id="keyword" name="keyword" placeholder="What service are you looking for?">
           </div>
 
           <div class="search-field category-field">
-            <label for="category"><i class="fas fa-tags"></i></label>
+            <label for="category">
+              <i class="fas fa-tags"></i>
+            </label>
             <select id="category" name="category">
-              <option value="all">All Services</option>
-              <option value="1">Hair Styling</option>
-              <option value="2">Makeup</option>
-              <option value="3">Facials</option>
-              <option value="4">Bridal Packages</option>
-              <option value="5">Waxing</option>
-              <option value="6">Nail Art</option>
+              <option value="all">All Categories</option>
+              <option value="1">Web Design</option>
+              <option value="2">App Development</option>
+              <option value="3">SEO</option>
+              <option value="4">Graphic Design</option>
+              <option value="5">Digital Marketing</option>
+              <option value="6">Photography</option>
             </select>
           </div>
 
-          <button type="submit" class="search-button">Search</button>
+          <button type="submit" class="search-button">
+            Search
+          </button>
         </div>
 
         <div class="advanced-filters">
-          <div class="filter-toggle"><i class="fas fa-sliders-h"></i> Advanced Filters</div>
+          <div class="filter-toggle">
+            <i class="fas fa-sliders-h"></i> Advanced Filters
+          </div>
 
           <div class="filter-options">
             <div class="filter-group">
               <h4>Price Range</h4>
-              <input type="range" min="0" max="10000" value="5000" class="price-slider" id="priceRange">
-              <div class="range-values">
-                <span>Rs. 0</span>
-                <span id="priceValue">Rs. 5000</span>
-                <span>Rs. 10,000+</span>
+              <div class="range-slider">
+                <input type="range" min="0" max="2000" value="1000" class="price-slider" id="priceRange">
+                <div class="range-values">
+                  <span>$0</span>
+                  <span id="priceValue">$1000</span>
+                  <span>$2000+</span>
+                </div>
               </div>
             </div>
 
             <div class="filter-group">
               <h4>Rating</h4>
-              <label><input type="checkbox" value="5"> <i class="fas fa-star"></i> 5 Stars</label>
-              <label><input type="checkbox" value="4"> <i class="fas fa-star"></i> 4+ Stars</label>
-              <label><input type="checkbox" value="3"> <i class="fas fa-star"></i> 3+ Stars</label>
+              <div class="rating-options">
+                <label class="rating-option">
+                  <input type="checkbox" value="5">
+                  <span class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </span>
+                </label>
+                <label class="rating-option">
+                  <input type="checkbox" value="4">
+                  <span class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </span> & up
+                </label>
+                <label class="rating-option">
+                  <input type="checkbox" value="3">
+                  <span class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </span> & up
+                </label>
+              </div>
             </div>
 
             <div class="filter-group">
               <h4>Availability</h4>
-              <label><input type="checkbox" value="today"> Available Today</label>
-              <label><input type="checkbox" value="week"> This Week</label>
-              <label><input type="checkbox" value="weekend"> Weekend</label>
+              <div class="availability-options">
+                <label class="availability-option">
+                  <input type="checkbox" value="today"> Available Today
+                </label>
+                <label class="availability-option">
+                  <input type="checkbox" value="week"> Available This Week
+                </label>
+                <label class="availability-option">
+                  <input type="checkbox" value="weekend"> Weekend Availability
+                </label>
+              </div>
             </div>
 
             <button type="button" class="apply-filters-btn">Apply Filters</button>
@@ -224,52 +160,116 @@
   </div>
 </section>
 
-<!-- Category Section -->
+<!-- Category Section (Improved) -->
 <section class="category-section">
-  <div class="container category-container">
-    <button class="add-btn" id="addCategoryBtn">Add Service Category</button>
-    <button class="scroll-btn scroll-left" id="scrollLeft"><i class="fas fa-chevron-left"></i></button>
+  <div class="category-container">
+    <button class="add-btn" id="addCategoryBtn">Add category</button>
+    <button class="scroll-btn scroll-left" id="scrollLeft">
+      <i class="fas fa-chevron-left"></i>
+    </button>
     <div class="category-wrapper" id="categoryWrapper">
-      <!-- Categories loaded via JS -->
+
+      <!-- Categories will be loaded here by JavaScript -->
     </div>
-    <button class="scroll-btn scroll-right" id="scrollRight"><i class="fas fa-chevron-right"></i></button>
+    <button class="scroll-btn scroll-right" id="scrollRight">
+      <i class="fas fa-chevron-right"></i>
+    </button>
   </div>
 </section>
-
-<!-- Add Service Button -->
-<div class="container">
-  <button class="add-btn" id="addServiceBtn">Add New Service</button>
-</div>
-
-<!-- Service Display -->
+<button class="add-btn" style="margin-left: 7vw" id="addServiceBtn">Add Service</button>
+<!-- Service Section (Improved) -->
 <section class="service-section">
-  <div class="container">
-    <h2 class="section-title" id="serviceTitle">Salon Services</h2>
-    <div class="service-container" id="serviceContainer">
-      <!-- Services loaded via JavaScript -->
-    </div>
+  <h2 class="section-title" id="serviceTitle" style="margin-left: 1vw">Web Design Services</h2>
+  <div class="service-container" id="serviceContainer">
+    <!-- Services will be loaded here by JavaScript -->
   </div>
 </section>
+
 
 <!-- Footer -->
 <footer class="footer">
   <div class="container">
-    <p>&copy; 2025 Ivory Veils Salon. All rights reserved.</p>
-    <div class="social-links">
-      <a href="#"><i class="fab fa-facebook"></i></a>
-      <a href="#"><i class="fab fa-twitter"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 class="footer-title">HomeEase</h3>
+        <p class="footer-tagline">Making your home life simpler and better</p>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact Us</h4>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> 123 Home St, Suite 100</li>
+            <li><i class="fas fa-phone"></i> (123) 456-7890</li>
+            <li><i class="fas fa-envelope"></i> info@homeease.com</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="social-links">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+
+      <p class="copyright">&copy; 2025 Ivory Veils Salon. All rights reserved.</p>
+
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <span>|</span>
+        <a href="#">Terms of Service</a>
+        <span>|</span>
+        <a href="#">Sitemap</a>
+      </div>
     </div>
   </div>
 </footer>
 
-<script src="../js/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-<script src="../js/service.js"></script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
 
+<!--<script>// Toggle mobile menu
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.querySelector('.nav-links');
 
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+});
+function logout() {
+  localStorage.removeItem("token"); // Clear the token
+  window.location.href = "login.html"; // Redirect to login page
+}
+
+// Add event listener to the logout link
+document.querySelector('a[href="#logout"]').addEventListener('click', function(e) {
+  e.preventDefault();
+  logout();
+});
+</script>-->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     renderNavbar();
@@ -286,10 +286,10 @@
     if (!token) {
       // Render the logged-out navbar
       navbarContainer.innerHTML = `
-      <a href="#" class="logo">Ivory_Veils</a>
+      <a href="#" class="logo">Ivory Veils</a>
       <ul class="nav-links">
         <li><a href="../view/index.html">Home</a></li>
-        <li><a href="../view/services.html">Services</a></li>
+        <li><a href="../view/services.html"  style="color: white">Services</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -310,7 +310,7 @@
         if (userRole === 'ADMIN') {
           navbarContainer.innerHTML = `
 
-    <a href="#" class="logo">Ivory_Veils [Admin]</a>
+    <a href="#" class="logo">Ivory Veils [Admin]</a>
     <ul class="nav-links">
       <li><a href="../view/admindashboard.html">Home</a></li>
       <li><a href="../view/users.html">Users</a></li>
@@ -326,12 +326,11 @@
         }else{
           // Render the logged-in navbar
           navbarContainer.innerHTML = `
-      <a href="#" class="logo">Ivory_Veils</a>
+      <a href="#" class="logo">Ivory Veils</a>
       <ul class="nav-links">
         <li><a href="#" onclick="navigateHome()">Home</a></li>
-        <li><a href="../view/services.html">Services</a></li>
+        <li><a href="../view/services.html" style="color: white">Services</a></li>
         <li><a href="../view/mybookings.html">Bookings</a></li>
-        <li><a href="../view/notifications.html">Notifications</a></li>
       </ul>
       <a href="../view/profile.html" class="logout-btn">
         <i class="fas fa-user"></i> Profile
@@ -390,8 +389,8 @@
       // Redirect based on role
       if (userRole === 'CUSTOMER') {
         window.location.href = '../view/index.html';
-      } else if (userRole === 'MANAGER') {
-        window.location.href = 'managerdashboard.html';
+      } else if (userRole === 'SERVICE_PROVIDER') {
+        window.location.href = '../view/providerdashboard.html';
       } else {
         // Default fallback if role isn't recognized
         window.location.href = '../view/index.html';
@@ -430,7 +429,7 @@
         console.log("Decoded Token:", decodedToken);
         console.log("User Role:", role);
 
-        if (role === "MANAGER") {
+        if (role === "SERVICE_PROVIDER") {
           console.log("User is a Service Provider");
           document.getElementById("addCategoryBtn").style.display = "none";
         } else if (role === "CUSTOMER") {
@@ -980,22 +979,67 @@
         document.querySelector('.edit-form').remove();
       });
     }
-
     async function handleEditSubmit(e) {
       e.preventDefault();
       const form = e.target;
       const formData = new FormData(form);
 
+      // Get form values
+      const serviceName = formData.get('serviceName').trim();
+      const description = formData.get('description').trim();
+      const fixedPriceStr = formData.get('fixedPrice').trim();
+      const hourlyRateStr = formData.get('hourlyRate').trim();
+      const fileInput = form.querySelector('input[type="file"]');
+
+      // Validation checks
+      if (!serviceName) {
+        Swal.fire({ icon: 'warning', title: 'Warning', text: 'Service Name is required.' });
+        return;
+      }
+
+      if (serviceName.length > 100) {
+        Swal.fire({ icon: 'warning', title: 'Warning', text: 'Service Name cannot exceed 100 characters.' });
+        return;
+      }
+
+      if (!description) {
+        Swal.fire({ icon: 'warning', title: 'Warning', text: 'Description is required.' });
+        return;
+      }
+
+      if (description.length > 500) {
+        Swal.fire({ icon: 'warning', title: 'Warning', text: 'Description cannot exceed 500 characters.' });
+        return;
+      }
+
+      let fixedPrice = parseFloat(fixedPriceStr);
+      if (fixedPriceStr && isNaN(fixedPrice)) {
+        Swal.fire({ icon: 'warning', title: 'Warning', text: 'Fixed Price must be a valid number.' });
+        return;
+      } else if (fixedPrice < 0) {
+        Swal.fire({ icon: 'warning', title: 'Warning', text: 'Fixed Price cannot be negative.' });
+        return;
+      }
+
+      let hourlyRate = parseFloat(hourlyRateStr);
+      if (hourlyRateStr && isNaN(hourlyRate)) {
+        Swal.fire({ icon: 'warning', title: 'Warning', text: 'Hourly Rate must be a valid number.' });
+        return;
+      } else if (hourlyRate < 0) {
+        Swal.fire({ icon: 'warning', title: 'Warning', text: 'Hourly Rate cannot be negative.' });
+        return;
+      }
+
       // Create serviceDTO object from form data
       const serviceDTO = {
         serviceId: parseInt(formData.get('serviceId')),
-        serviceName: formData.get('serviceName'),
-        description: formData.get('description'),
-        fixedPrice: parseFloat(formData.get('fixedPrice')),
-        hourlyRate: parseFloat(formData.get('hourlyRate')),
+        serviceName: serviceName,
+        description: description,
+        fixedPrice: isNaN(fixedPrice) ? null : fixedPrice, // Use null if not a valid number
+        hourlyRate: isNaN(hourlyRate) ? null : hourlyRate, // Use null if not a valid number
         image: formData.get('existingImage'),
         categoryId: service1.categoryId,
-        serviceProviderId: service1.serviceProviderId// Preserve existing image by default
+        serviceProviderId: service1.serviceProviderId // Assuming service1 is defined elsewhere
       };
 
       // Create new FormData for the request
@@ -1005,9 +1049,20 @@
       requestFormData.append('serviceDTO',
               new Blob([JSON.stringify(serviceDTO)], { type: 'application/json' }));
 
-      // Only append file if a new one was selected
-      const fileInput = form.querySelector('input[type="file"]');
+      // Only append file if a new one was selected and has a size greater than 0
       if (fileInput.files.length > 0 && fileInput.files[0].size > 0) {
+        // Basic file type validation (you might want to enhance this)
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!allowedTypes.includes(fileInput.files[0].type)) {
+          Swal.fire({ icon: 'warning', title: 'Warning', text: 'Invalid file type. Only JPEG, PNG, and GIF are allowed.' });
+          return;
+        }
+        // Basic file size validation (adjust as needed)
+        const maxSizeMB = 2;
+        if (fileInput.files[0].size > maxSizeMB * 1024 * 1024) {
+          Swal.fire({ icon: 'warning', title: 'Warning', text: `File size exceeds the limit of ${maxSizeMB}MB.` });
+          return;
+        }
         requestFormData.append('file', fileInput.files[0]);
       }
 
@@ -1026,18 +1081,31 @@
         }
 
         const result = await response.json();
-        alert(result.message || 'Service updated successfully!');
-        document.querySelector('.edit-form').remove();
-
-        // Refresh services
-        if (typeof loadServices === 'function') {
-          loadServices(activeCategoryId);
-        } else {
-          location.reload();
-        }
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: result.message || 'Service updated successfully!',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          const editForm = document.querySelector('.edit-form');
+          if (editForm) {
+            editForm.remove();
+          }
+          // Refresh services
+          if (typeof loadServices === 'function') {
+            loadServices(activeCategoryId);
+          } else {
+            location.reload();
+          }
+        });
       } catch (error) {
         console.error('Update error:', error);
-        alert('Error updating service: ' + error.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error updating service: ' + error.message,
+        });
       }
     }
 

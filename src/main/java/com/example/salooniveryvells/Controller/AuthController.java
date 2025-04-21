@@ -1,11 +1,12 @@
+
 package com.example.salooniveryvells.Controller;
 
 import com.example.salooniveryvells.Dto.AuthDTO;
 import com.example.salooniveryvells.Dto.ResponseDTO;
 import com.example.salooniveryvells.Dto.UserDTO;
 import com.example.salooniveryvells.Service.Impl.UserServiceImpl;
-import com.example.salooniveryvells.Util.JwtUtil;
-import com.example.salooniveryvells.Util.VarList;
+import com.example.salooniveryvells.Utill.JwtUtil;
+import com.example.salooniveryvells.Utill.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +25,6 @@ public class AuthController {
     private final UserServiceImpl userService;
     private final ResponseDTO responseDTO;
 
-    //constructor injection
     public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserServiceImpl userService, ResponseDTO responseDTO) {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
@@ -61,4 +61,5 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDTO(VarList.Created, "Success", authDTO));
     }
+
 }

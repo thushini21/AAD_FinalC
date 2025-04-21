@@ -1,5 +1,4 @@
 package com.example.salooniveryvells.Dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

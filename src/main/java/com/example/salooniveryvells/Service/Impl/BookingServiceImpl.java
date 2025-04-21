@@ -1,5 +1,6 @@
 package com.example.salooniveryvells.Service.Impl;
 
+
 import com.example.salooniveryvells.Advisor.ResourceNotFoundException;
 import com.example.salooniveryvells.Dto.BookingDTO;
 import com.example.salooniveryvells.Dto.ResponseDTO;
@@ -10,7 +11,7 @@ import com.example.salooniveryvells.Repo.BookingRepository;
 import com.example.salooniveryvells.Repo.ServiceRepository;
 import com.example.salooniveryvells.Repo.UserRepository;
 import com.example.salooniveryvells.Service.BookingService;
-import com.example.salooniveryvells.Util.VarList;
+import com.example.salooniveryvells.Utill.VarList;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
+
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ServiceRepository serviceRepository;
@@ -31,11 +33,11 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public ResponseDTO createBooking(BookingDTO bookingDTO) {
         try {
-            // Validate customer exists
+            // Validate customer
             User customer = userRepository.findById(bookingDTO.getCustomerId())
                     .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
-            // Validate service exists
+            // Validate service
             Service service = serviceRepository.findById(bookingDTO.getServiceId())
                     .orElseThrow(() -> new ResourceNotFoundException("Service not found"));
 
@@ -74,6 +76,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public ResponseDTO getBookingsByCustomer(int customerId) {
         try {
+            //Find bookings from customer
             List<Booking> bookings = bookingRepository.findByCustomer_UserId(customerId);
 
             if (bookings.isEmpty()) {
@@ -242,4 +245,3 @@ public class BookingServiceImpl implements BookingService {
     }
 
 }
-

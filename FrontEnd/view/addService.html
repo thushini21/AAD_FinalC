@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title> Add Service</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
   <style>/* General Form Styling */
   #addServiceForm {
     max-width: 600px;
@@ -107,24 +108,24 @@
             name="serviceName"
             class="form-control"
             required
-            placeholder="e.g., Bridal Makeup, Hair Styling"
+            placeholder="e.g., Makeup , Nail art"
     >
   </div>
 
   <div class="form-group">
-    <label for="description">Service Description*</label>
+    <label for="description">Description*</label>
     <textarea
             id="description"
             name="description"
             class="form-control"
             rows="4"
             required
-            placeholder="Describe the beauty service in detail..."
+            placeholder="Describe the service in detail..."
     ></textarea>
   </div>
 
   <div class="form-group">
-    <label for="fixedPrice">Fixed Price (LKR)</label>
+    <label for="fixedPrice">Fixed Price ($)</label>
     <input
             type="number"
             id="fixedPrice"
@@ -132,20 +133,20 @@
             class="form-control"
             step="0.01"
             min="0"
-            placeholder="e.g., 5000.00"
+            placeholder="e.g., 50.00"
     >
   </div>
 
   <div class="form-group">
-    <label for="hourlyRate">Hourly Rate (LKR/hour)</label>
+    <label for="Additional Charge">Additional Charge</label>
     <input
             type="number"
-            id="hourlyRate"
-            name="hourlyRate"
+            id="Additional Charge"
+            name="Additional Charge"
             class="form-control"
             step="0.01"
             min="0"
-            placeholder="e.g., 1500.00"
+            placeholder="e.g., 25.00"
     >
   </div>
 
@@ -158,27 +159,27 @@
             class="form-control"
             accept="image/*"
     >
-    <small class="text-muted">Upload JPG, PNG, or SVG images showcasing the service</small>
+    <small class="text-muted">Supports JPG, PNG, or SVG</small>
   </div>
 
   <div class="form-group">
-    <label for="categoryId">Service Category*</label>
+    <label for="categoryId">Category*</label>
     <select
             id="categoryId"
             name="categoryId"
             class="form-control"
             required
     >
-      <option value="">-- Select a Beauty Category --</option>
-      <!-- Populate dynamically: e.g., Hair, Makeup, Nails, Spa, etc. -->
+      <option value="">-- Select a Category --</option>
+      <!-- Dynamically loaded from backend -->
     </select>
   </div>
 
-  <button type="submit" class="btn btn-primary" id="addServiceBtn">Add Salon Service</button>
+  <button type="submit" class="btn btn-primary" id="addServiceBtn">Add Service</button>
 </form>
-
-<script src="../js/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
 <script>
   $(document).ready(function() {
   // Load categories dropdown
@@ -270,9 +271,15 @@
         processData: false,
         contentType: false,
         success: function(response) {
-          alert('Success! Service: ' + response.data.serviceName);
+          Swal.fire({
+            icon: 'success',
+            title: 'Add Service Successful!',
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() => {
+          window.location.href = '../view/services.html';
           $('#addServiceForm')[0].reset();
-          $('#imagePreview').hide();
+          $('#imagePreview').hide();});
         },
         error: function(xhr) {
           alert('Error: ' + (xhr.responseJSON?.message || 'Check console for details'));

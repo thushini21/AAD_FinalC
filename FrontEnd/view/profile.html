@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -26,7 +27,7 @@
 
         /* Navbar */
         .navbar {
-            background: linear-gradient(10deg, #a3835b,#c4a484);
+            background: linear-gradient(10deg, #FFD700,#e3c10e);
             transition: all 0.3s ease-in-out;
             color: #000;
             padding: 0.5rem 0;
@@ -104,7 +105,7 @@
         }
 
         .profile-header {
-            background: linear-gradient(10deg, #d2b48c,#bfa58a);
+            background: linear-gradient(10deg, #FFD700,#e3c10e);
             color: #000;
             padding: 2rem;
             border-radius: 10px 10px 0 0;
@@ -129,7 +130,7 @@
 
         .profile-tabs .nav-link.active {
             color: #000;
-            border-bottom: 3px solid #c4a484;
+            border-bottom: 3px solid #FFD700;
             background-color: transparent;
         }
 
@@ -201,6 +202,167 @@
             }
             .profile-header {
                 padding: 1rem;
+            }
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 3rem 0 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand {
+            flex: 1 1 300px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .footer-tagline {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            max-width: 250px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 2 1 600px;
+            justify-content: space-between;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            margin-bottom: 2rem;
+            padding-right: 1rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #FFD700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li i {
+            margin-right: 0.5rem;
+            color: #FFD700;
+            width: 20px;
+            text-align: center;
+        }
+
+        .footer-section a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-section a:hover {
+            color: #FFD700;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+        }
+
+        .social-links {
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 50%;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: #FFD700;
+            color: #2c3e50;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .footer-legal {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .footer-legal a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-legal a:hover {
+            color: #FFD700;
+        }
+
+        .footer-legal span {
+            margin: 0 0.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .footer-section {
+                flex: 1 1 100%;
             }
         }
     </style>
@@ -401,11 +563,73 @@
     </div>
 </div>
 
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3 class="footer-title">Ivory Veils</h3>
+                <p class="footer-tagline">Making your beauty journey simpler and better.</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 45 Elegant Ave, Ivory Veils Salon, Maharagama</li>
+                        <li><i class="fas fa-phone"></i> +94 77 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> contact@ivoryveilssalon.com</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            <p class="copyright">&copy; 2025 Ivory Veils Salon. All rights reserved.</p>
+
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <span>|</span>
+                <a href="#">Terms of Service</a>
+                <span>|</span>
+                <a href="#">Sitemap</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
         renderNavbar();
         window.addEventListener('storage', function(e) {
@@ -414,6 +638,7 @@
             }
         });
     });
+
     function renderNavbar() {
         const token = localStorage.getItem('token');
         const navbarContainer = document.querySelector('nav.navbar .container');
@@ -421,73 +646,71 @@
         if (!token) {
             // Render the logged-out navbar
             navbarContainer.innerHTML = `
-      <a href="#" class="logo">HomeEase</a>
-      <ul class="nav-links">
-        <li><a href="../view/index.html">Home</a></li>
-        <li><a href="../view/services.html">Services</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <a href="../view/login.html" class="login-btn">
-        <i class="fas fa-user"></i> Login
-      </a>
-      <div class="hamburger" id="hamburger">
-        <i class="fas fa-bars"></i>
-      </div>
-    `;
+        <a href="#" class="logo">Ivory Veils</a>
+        <ul class="nav-links">
+          <li><a href="../view/index.html">Home</a></li>
+          <li><a href="../view/services.html">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="../view/login.html" class="login-btn">
+          <i class="fas fa-user"></i> Login
+        </a>
+        <div class="hamburger" id="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+      `;
         } else {
             try {
-                // Decode the token to get the role
-                const decoded = jwt_decode(token);
-                const userRole = decoded.role; // Assuming your JWT has a 'role' claim
 
-                // Redirect based on role
+                const decoded = jwt_decode(token);
+                const userRole = decoded.role;
+
+
                 if (userRole === 'ADMIN') {
                     navbarContainer.innerHTML = `
-
-    <a href="#" class="logo">HomeEase [Admin]</a>
-    <ul class="nav-links">
-      <li><a href="../view/admindashboard.html">Home</a></li>
-      <li><a href="../view/users.html">Users</a></li>
-      <li><a href="../view/services.html" style="color: white">Services</a></li>
-    </ul>
-    <a href="../view/profile.html" class="logout-btn">
-     <i class="fas fa-user"></i> Profile
-    </a>
-    <div class="hamburger" id="hamburger">
-      <i class="fas fa-bars"></i>
-    </div>
+            <a href="#" class="logo">Ivory Veils [Admin]</a>
+            <ul class="nav-links">
+              <li><a href="../view/admindashboard.html">Home</a></li>
+              <li><a href="../view/users.html">Users</a></li>
+              <li><a href="../view/services.html" style="color: white">Services</a></li>
+            </ul>
+            <a href="../view/profile.html" class="logout-btn">
+              <i class="fas fa-user"></i> Profile
+            </a>
+            <div class="hamburger" id="hamburger">
+              <i class="fas fa-bars"></i>
+            </div>
           `;
-                }else{
-                    // Render the logged-in navbar
+                } else {
+
                     navbarContainer.innerHTML = `
-      <a href="#" class="logo">HomeEase</a>
-      <ul class="nav-links">
-        <li><a href="#" onclick="navigateHome()">Home</a></li>
-        <li><a href="../view/services.html">Services</a></li>
-        <li><a href="../view/mybookings.html">Bookings</a></li>
-        <li><a href="../view/notifications.html">Notifications</a></li>
-      </ul>
-      <a href="../view/profile.html" class="logout-btn">
-        <i class="fas fa-user"></i> Profile
-      </a>
-      <div class="hamburger" id="hamburger">
-        <i class="fas fa-bars"></i>
-      </div>
-    `;
+            <a href="#" class="logo">Ivory Veils</a>
+            <ul class="nav-links">
+              <li><a href="#" onclick="navigateHome()">Home</a></li>
+              <li><a href="../view/services.html">Services</a></li>
+              <li><a href="../view/mybookings.html">Bookings</a></li>
+            </ul>
+            <a href="../view/profile.html" class="logout-btn">
+              <i class="fas fa-user"></i> Profile
+            </a>
+            <div class="hamburger" id="hamburger">
+              <i class="fas fa-bars"></i>
+            </div>
+          `;
                 }
             } catch (error) {
                 console.error('Error decoding token:', error);
                 window.location.href = 'login.html';
             }
-
         }
 
-        // Re-attach event listeners after rendering
+
         setupNavbarEvents();
     }
+
     function setupNavbarEvents() {
-        // Hamburger menu toggle
+
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.querySelector('.nav-links');
 
@@ -498,10 +721,9 @@
         }
     }
 
-    // Base API URL - adjust this to your backend endpoint
     const API_BASE_URL = 'http://localhost:8080/api/v1';
 
-    // Initialize page
+
     $(document).ready(async function() {
         try {
             const userEmail = getUserEmailFromToken();
@@ -512,18 +734,22 @@
             const userId = await getUserIdFromEmail(userEmail);
             const user = await getUserFromId(userId);
 
-            // Load user data
+
             loadUserProfile(user);
 
-            // Set up form submissions
+
             $('#updateForm').submit(updateProfile);
             $('#passwordForm').submit(changePassword);
 
-            // Hide role-specific fields initially
+
             toggleRoleSpecificFields(user.role);
         } catch (error) {
             console.error("Error initializing profile:", error);
-            alert("Failed to load profile data");
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to load profile data!',
+            });
         }
     });
 
@@ -536,7 +762,7 @@
 
         try {
             const decoded = jwt_decode(token);
-            return decoded.sub; // Assuming your JWT has a 'sub' claim with email
+            return decoded.sub;
         } catch (e) {
             console.error("Error decoding token:", e);
             return null;
@@ -585,7 +811,6 @@
     function loadUserProfile(user) {
         console.log("Loading user profile:", user);
 
-        // Update profile view - common fields for all roles
         $('#profileName').text(user.name);
         $('#userId').text(user.userId);
         $('#userEmail').text(user.email);
@@ -593,7 +818,7 @@
         $('#userAddress').text(user.address || 'N/A');
         $('#profileStatusBadge').text(user.status || 'Active');
 
-        // Update verification status
+
         let verificationBadgeClass = 'bg-warning';
         if (user.verificationStatus === 'APPROVED') verificationBadgeClass = 'bg-success';
         if (user.verificationStatus === 'REJECTED') verificationBadgeClass = 'bg-danger';
@@ -601,7 +826,7 @@
             .removeClass('bg-warning bg-success bg-danger')
             .addClass(verificationBadgeClass);
 
-        // Update role badge
+
         $('#profileRoleBadge').text(user.role.replace('_', ' '));
         if (user.role === 'ADMIN') {
             $('#profileRoleBadge').addClass('badge-admin');
@@ -611,31 +836,30 @@
             $('#profileRoleBadge').addClass('badge-customer');
         }
 
-        // Update form fields - common fields
+
         $('#updateName').val(user.name);
         $('#updateEmail').val(user.email);
         $('#updatePhone').val(user.phoneNumber || '');
         $('#updateAddress').val(user.address || '');
 
-        // Update avatar
+
         if (user.avatarUrl) {
             $('#profileAvatar').attr('src', user.avatarUrl);
         } else {
             $('#profileAvatar').attr('src', `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`);
         }
 
-        // Handle role-specific fields
+
         if (user.role === 'ADMIN') {
-            // Show admin fields and hide others
+
             $('#adminLevel').text(user.adminLevel || 'N/A');
             $('#updateAdminLevel').val(user.adminLevel || '');
-        }
-        else if (user.role === 'SERVICE_PROVIDER') {
-            // Show service provider fields and hide admin fields
+        } else if (user.role === 'SERVICE_PROVIDER') {
+
             $('#serviceArea').text(user.serviceArea || 'N/A');
             $('#updateServiceArea').val(user.serviceArea || '');
 
-            // Handle documents
+
             if (user.idProofPath) {
                 $('#idProofLink').attr('href', user.idProofPath).parent().show();
             } else {
@@ -649,17 +873,17 @@
             }
         }
 
-        // Call this to ensure all fields are properly shown/hidden
+
         toggleRoleSpecificFields(user.role);
     }
 
     function toggleRoleSpecificFields(role) {
-        // In view mode
+
         $('#serviceAreaField').toggle(role === 'SERVICE_PROVIDER');
         $('#adminLevelField').toggle(role === 'ADMIN');
         $('#documentsSection').toggle(role === 'SERVICE_PROVIDER');
 
-        // In edit mode
+
         $('#updateServiceAreaField').toggle(role === 'SERVICE_PROVIDER');
         $('#updateAdminLevelField').toggle(role === 'ADMIN');
         $('#updateDocumentsField').toggle(role === 'SERVICE_PROVIDER');
@@ -667,21 +891,44 @@
 
     async function updateProfile(e) {
         e.preventDefault();
+
+        const updateName = $('#updateName').val().trim();
+        if (!updateName) {
+            Swal.fire({ icon: 'warning', title: 'Warning', text: 'Name cannot be empty.' });
+            return;
+        }
+
+
+        const updateEmail = $('#updateEmail').val().trim();
+        if (updateEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(updateEmail)) {
+            Swal.fire({ icon: 'warning', title: 'Warning', text: 'Invalid email format.' });
+            return;
+        }
+
+
+        const updatePhone = $('#updatePhone').val().trim();
+        if (updatePhone) {
+            if (!/^\d{10}$/.test(updatePhone)) {
+                Swal.fire({ icon: 'warning', title: 'Warning', text: 'Phone number must contain exactly 10 digits.' });
+                return;
+            }
+        }
+
         const form = e.target;
         const formData = new FormData(form);
 
-        // Create userDTO object with only the fields that have values
+
         const userDTO = {
             userId: parseInt($('#userId').text())
         };
 
-        // Only include fields that are being updated
+
         if (formData.get('updateName')) userDTO.name = formData.get('updateName');
         if (formData.get('updateEmail')) userDTO.email = formData.get('updateEmail');
         if (formData.get('updatePhone')) userDTO.phoneNumber = formData.get('updatePhone');
         if (formData.get('updateAddress')) userDTO.address = formData.get('updateAddress');
 
-        // Include role-specific fields if visible and have values
+
         if ($('#updateServiceAreaField').is(':visible') && formData.get('updateServiceArea')) {
             userDTO.serviceArea = formData.get('updateServiceArea');
         }
@@ -720,23 +967,31 @@
             }
 
             const result = await response.json();
-            alert(result.message || 'Profile updated successfully!');
-            const userEmail = getUserEmailFromToken();
-            if (!userEmail) {
-                throw new Error("User email not found in token");
-            }
-
-            const userId = await getUserIdFromEmail(userEmail);
-            const user = await getUserFromId(userId);
-            loadUserProfile(user)
-
-            const profileTab = new bootstrap.Tab($('#profile-tab')[0]);
-            profileTab.show();
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: result.message || 'Profile updated successfully!',
+            }).then(async () => {
+                const userEmail = getUserEmailFromToken();
+                if (!userEmail) {
+                    throw new Error("User email not found in token");
+                }
+                const userId = await getUserIdFromEmail(userEmail);
+                const user = await getUserFromId(userId);
+                loadUserProfile(user);
+                const profileTab = new bootstrap.Tab($('#profile-tab')[0]);
+                profileTab.show();
+            });
         } catch (error) {
             console.error('Update error:', error);
-            alert('Error updating profile: ' + error.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error updating profile: ' + error.message,
+            });
         }
     }
+
     function isPasswordStrong(password) {
         // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
         const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -750,16 +1005,26 @@
         const newPassword = $('#newPassword').val();
         const confirmPassword = $('#confirmPassword').val();
 
-        if (newPassword !== confirmPassword) {
-            alert('New passwords do not match!');
+        if (!currentPassword) {
+            Swal.fire({ icon: 'warning', title: 'Warning', text: 'Current password cannot be empty.' });
             return;
         }
 
-       /* if (!isPasswordStrong(newPassword)) {
-            alert('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number');
+        if (!newPassword) {
+            Swal.fire({ icon: 'warning', title: 'Warning', text: 'New password cannot be empty.' });
             return;
         }
-*/
+
+        if (!confirmPassword) {
+            Swal.fire({ icon: 'warning', title: 'Warning', text: 'Confirm password cannot be empty.' });
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'New passwords do not match!' });
+            return;
+        }
+
         $.ajax({
             url: `${API_BASE_URL}/users/change-password`,
             type: 'POST',
@@ -772,23 +1037,28 @@
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             success: function() {
-                alert('Password changed successfully!');
-                $('#passwordForm')[0].reset();
-
-                // Switch back to profile view
-                const profileTab = new bootstrap.Tab($('#profile-tab')[0]);
-                profileTab.show();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Password changed successfully!',
+                }).then(() => {
+                    $('#passwordForm')[0].reset();
+                    // Switch back to profile view
+                    const profileTab = new bootstrap.Tab($('#profile-tab')[0]);
+                    profileTab.show();
+                });
             },
             error: function(xhr) {
                 console.error('Error changing password:', xhr.responseText);
                 if (xhr.status === 401) {
-                    alert('Current password is incorrect');
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'Current password is incorrect' });
                 } else {
-                    alert(xhr.responseJSON?.message || 'Failed to change password');
+                    Swal.fire({ icon: 'error', title: 'Oops...', text: xhr.responseJSON?.message || 'Failed to change password' });
                 }
             }
         });
     }
+
     function logout() {
         localStorage.removeItem('token');
         window.location.href = '../view/index.html';

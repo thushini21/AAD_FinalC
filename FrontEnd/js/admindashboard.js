@@ -8,16 +8,16 @@ $(document).ready(function() {
     function loadStatsData() {
         // In a real app, you would fetch this from an API
         const statsData = {
-            totalUsers: 1245,
-            totalProviders: 328,
-            totalBookings: 567,
-            totalRevenue: 24890
+            totalUsers: 5,
+            totalProviders: 2,
+            totalBookings: 5,
+            totalRevenue: 5000
         };
 
         $('.stat-number').eq(0).text(statsData.totalUsers.toLocaleString());
         $('.stat-number').eq(1).text(statsData.totalProviders.toLocaleString());
         $('.stat-number').eq(2).text(statsData.totalBookings.toLocaleString());
-        $('.stat-number').eq(3).text('$' + statsData.totalRevenue.toLocaleString());
+        $('.stat-number').eq(3).text('Rs.' + statsData.totalRevenue.toLocaleString());
     }
 
     // Load activities data
@@ -33,15 +33,15 @@ $(document).ready(function() {
             },
             {
                 id: 1255,
-                activity: "Managerregistration",
-                user: "newmanager@example.com",
+                activity: "Provider registration",
+                user: "newprovider@example.com",
                 time: "25 mins ago",
                 status: "approved"
             },
             {
                 id: 1254,
                 activity: "Service completed",
-                user: "manager@example.com",
+                user: "provider@example.com",
                 time: "1 hour ago",
                 status: "completed"
             },

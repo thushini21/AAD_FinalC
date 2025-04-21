@@ -1,13 +1,14 @@
 package com.example.salooniveryvells.Service.Impl;
 
+
+import com.example.salooniveryvells.Advisor.ResourceNotFoundException;
 import com.example.salooniveryvells.Dto.CategoryDTO;
 import com.example.salooniveryvells.Dto.ResponseDTO;
-import com.example.salooniveryvells.Service.CategoryService;
-import com.example.salooniveryvells.Util.VarList;
-import com.example.salooniveryvells.Advisor.ResourceNotFoundException;
 import com.example.salooniveryvells.Entity.Category;
 import com.example.salooniveryvells.Repo.CategoryRepository;
 import com.example.salooniveryvells.Repo.ServiceRepository;
+import com.example.salooniveryvells.Service.CategoryService;
+import com.example.salooniveryvells.Utill.VarList;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,4 +185,6 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.deleteById(categoryId);
         return new ResponseDTO(200, "Category deleted successfully", null);
     }
+
+
 }

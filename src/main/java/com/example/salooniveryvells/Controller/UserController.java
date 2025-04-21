@@ -1,12 +1,13 @@
 package com.example.salooniveryvells.Controller;
 
-import com.example.salooniveryvells.Dto.ChangePasswordRequestDTO;
-import com.example.salooniveryvells.Service.UserService;
-import com.example.salooniveryvells.Util.JwtUtil;
-import com.example.salooniveryvells.Util.VarList;
 import com.example.salooniveryvells.Advisor.ResourceNotFoundException;
+import com.example.salooniveryvells.Dto.ChangePasswordRequestDTO;
 import com.example.salooniveryvells.Dto.ResponseDTO;
 import com.example.salooniveryvells.Dto.UserDTO;
+import com.example.salooniveryvells.Service.UserService;
+import com.example.salooniveryvells.Utill.JwtUtil;
+import com.example.salooniveryvells.Utill.VarList;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,18 +27,19 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/v1/users")
 public class UserController {
+
     @Autowired
     private UserService userService;
     private final JwtUtil jwtUtil;
 
+    //constructor injection
     public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/register")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> addUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ResponseDTO> addUser(@Valid @RequestBody UserDTO userDTO) {
         System.out.println("register");
         System.out.println(userDTO.getEmail());
         System.out.println(userDTO.getName());
@@ -64,11 +66,12 @@ public class UserController {
         }
     }
 
-    @GetMapping("/allManagerIds")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> getAllManagerIds() {
+    @GetMapping("/allProviderIds")
+    @PreAuthorize("hasAuthority('SERVICE_PROVIDER')")
+    public ResponseEntity<ResponseDTO> getAllCategoryIds() {
         try {
-            ResponseDTO responseDTO = userService.getAllManagerIds();
+            ResponseDTO responseDTO = userService.getAllServiceProviderIds();
+            System.out.println(responseDTO);
             return ResponseEntity.ok()
                     .body(new ResponseDTO(VarList.OK, "Success", responseDTO));
         } catch (Exception e) {
@@ -79,7 +82,7 @@ public class UserController {
     }
 
     @GetMapping("/getidbyemail")
-    public ResponseEntity<ResponseDTO> getIdByEmail(
+    public ResponseEntity<ResponseDTO> getIdByEmail(@Valid
             @RequestParam String email) {
         try {
             ResponseDTO responseDTO = userService.getUserIdByEmail(email);
@@ -91,10 +94,9 @@ public class UserController {
                             "Error: " + e.getMessage(), null));
         }
     }
-
     @PatchMapping("/{userId}/verification")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> updateVerificationStatus(
+    public ResponseEntity<ResponseDTO> updateVerificationStatus(@Valid
             @PathVariable int userId,
             @RequestParam String status) {
 
@@ -118,13 +120,14 @@ public class UserController {
     }
 
     @PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO> updateUser(
+    public ResponseEntity<ResponseDTO> updateUser(@Valid
             @RequestPart("userDTO") UserDTO userDTO,
             @RequestPart(value = "idProof", required = false) MultipartFile idProof,
             @RequestPart(value = "addressProof", required = false) MultipartFile addressProof) {
 
         try {
             String uploadDir = "FrontEnd/view/uploads/";
+
 
             if (idProof != null && !idProof.isEmpty()) {
                 String filename = UUID.randomUUID().toString() + "_" + idProof.getOriginalFilename();
@@ -142,6 +145,7 @@ public class UserController {
                 userDTO.setIdProofPath(filename);
             }
 
+
             if (addressProof != null && !addressProof.isEmpty()) {
                 String filename = UUID.randomUUID().toString() + "_" + addressProof.getOriginalFilename();
                 File directory = new File(uploadDir);
@@ -157,6 +161,7 @@ public class UserController {
                 }
                 userDTO.setAddressProofPath(filename);
             }
+
 
             int result = userService.updateUserPartial(userDTO);
 
@@ -181,9 +186,8 @@ public class UserController {
                             "Error: " + e.getMessage(), null));
         }
     }
-
     @DeleteMapping("/{userId}")
-    public ResponseEntity<ResponseDTO> deleteUser(@PathVariable int userId) {
+    public ResponseEntity<ResponseDTO> deleteUser(@Valid @PathVariable int userId) {
         ResponseDTO response = userService.deleteUser(userId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
@@ -192,7 +196,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> getAllUsers() {
         try {
-            ResponseDTO responseDTO = userService.getAllUsers();
+        ResponseDTO responseDTO = userService.getAllUsers();
             return ResponseEntity.ok()
                     .body(new ResponseDTO(VarList.OK, "Success", responseDTO));
         } catch (Exception e) {
@@ -202,11 +206,12 @@ public class UserController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<ResponseDTO> changePassword(
+    public ResponseEntity<ResponseDTO> changePassword(@Valid
             @RequestBody ChangePasswordRequestDTO request,
             @RequestHeader("Authorization") String token) {
 
         try {
+
             String jwtToken = token.substring(7);
 
             int result = userService.changePassword(jwtToken, request.getCurrentPassword(), request.getNewPassword());
@@ -252,6 +257,7 @@ public class UserController {
     public ResponseEntity<ResponseDTO> toggleUserStatus(@PathVariable int userId) {
         ResponseDTO responseDTO = userService.toggleUserStatus(userId);
 
+
         HttpStatus httpStatus;
         switch (responseDTO.getCode()) {
             case VarList.OK:
@@ -267,6 +273,7 @@ public class UserController {
         return ResponseEntity.status(httpStatus).body(responseDTO);
     }
 
+
     @GetMapping("/{userId}")
     public ResponseEntity<ResponseDTO> getUserById(@PathVariable int userId) {
         try {
@@ -279,10 +286,10 @@ public class UserController {
                             "Error: " + e.getMessage(), null));
         }
     }
-
     @GetMapping(value = "/get")
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ResponseDTO> get(){
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
 }

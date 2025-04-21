@@ -39,4 +39,3 @@ public class Booking {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt; // Timestamp for when the booking was created
 }
-

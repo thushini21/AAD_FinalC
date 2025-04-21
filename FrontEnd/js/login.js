@@ -1,16 +1,60 @@
-
 // Toggle mobile menu
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.querySelector('.navbar .nav-links');
 
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-});
+if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+}
 
-// Form Validation
+// Form Validation and Login Function
 function login() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // Basic validation
+    if (!email || !password) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Please fill in all fields',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Email',
+            text: 'Please enter a valid email address',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
+
+    // Password length validation
+    if (password.length < 6) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Weak Password',
+            text: 'Password should be at least 6 characters long',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
+
+    // Show loading indicator
+    Swal.fire({
+        title: 'Logging in...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
     $.ajax({
         url: 'http://localhost:8080/api/v1/auth/authenticate',
@@ -20,53 +64,80 @@ function login() {
             email: email,
             password: password
         }),
-        success: function (response) {
-            alert("Login successful");
+        success: function(response) {
+            Swal.close();
             localStorage.setItem("token", response.data.token);
-            console.log(response.data.token)
-            // Assuming the token is stored in localStorage
+
             const token = localStorage.getItem("token");
 
             if (token) {
                 try {
-                    // Decode the token
                     const decodedToken = jwt_decode(token);
-
-                    // Extract the role from the token payload
-                    const role = decodedToken.role; // Assuming the role is stored in the "role" claim
+                    const role = decodedToken.role;
 
                     console.log("Decoded Token:", decodedToken);
                     console.log("User Role:", role);
 
-                    // Perform actions based on the role
-                    if (role === "MANAGER") {
-                        console.log("User is a Manager");
-                        window.location.href = "../view/managerdashboard.html";
-                        // Redirect or show provider-specific content
-                    } else if (role === "CUSTOMER") {
-                        console.log("User is a Customer");
-                        setTimeout(function() {
-                            window.location.href = "../view/index.html"; // Replace with your login page URL
-                        }, 500);
-                        // Redirect or show customer-specific content
-                    }  else if (role === "ADMIN") {
-                        console.log("User is a Customer");
-                        window.location.href = "../view/admindashboard.html";
-                        // Redirect or show customer-specific content
-                    } else {
-                        console.log("Unknown role");
-                    }
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Successful',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        if (role === "SERVICE_PROVIDER") {
+                            window.location.href = "../view/providerdashboard.html";
+                        } else if (role === "CUSTOMER") {
+                            window.location.href = "../view/index.html";
+                        } else if (role === "ADMIN") {
+                            window.location.href = "../view/admindashboard.html";
+                        } else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Unknown Role',
+                                text: 'You will be redirected to the home page',
+                                confirmButtonColor: '#3085d6'
+                            }).then(() => {
+                                window.location.href = "../view/index.html";
+                            });
+                        }
+                    });
+
                 } catch (error) {
                     console.error("Failed to decode token:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Token Error',
+                        text: 'There was an issue processing your login',
+                        confirmButtonColor: '#3085d6'
+                    });
                 }
             } else {
-                console.error("No token found in localStorage");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Authentication Error',
+                    text: 'No token received',
+                    confirmButtonColor: '#3085d6'
+                });
             }
-
         },
-
-        error: function (xhr, status, error) {
-            alert("Login failed")
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: xhr.responseJSON?.message || 'Invalid credentials or server error',
+                confirmButtonColor: '#3085d6'
+            });
         }
     });
 }
+
+// Add event listener for form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            login();
+        });
+    }
+});

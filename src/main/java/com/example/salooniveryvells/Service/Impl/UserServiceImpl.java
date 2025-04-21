@@ -1,14 +1,15 @@
 package com.example.salooniveryvells.Service.Impl;
 
+
+import com.example.salooniveryvells.Advisor.ResourceNotFoundException;
 import com.example.salooniveryvells.Dto.ResponseDTO;
 import com.example.salooniveryvells.Dto.UserDTO;
-import com.example.salooniveryvells.Enum.UserRole;
-import com.example.salooniveryvells.Service.UserService;
-import com.example.salooniveryvells.Util.JwtUtil;
-import com.example.salooniveryvells.Util.VarList;
-import com.example.salooniveryvells.Advisor.ResourceNotFoundException;
 import com.example.salooniveryvells.Entity.User;
 import com.example.salooniveryvells.Repo.UserRepository;
+import com.example.salooniveryvells.Service.UserService;
+import com.example.salooniveryvells.Utill.JwtUtil;
+import com.example.salooniveryvells.Utill.VarList;
+import com.example.salooniveryvells.enums.UserRole;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +25,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserDetailsService , UserService {
+public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserDetailsService , UserService {
 
     @Autowired
     private JwtUtil jwtTokenUtil;
+
 
     public UserDTO loadUserDetailsByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username);
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserDetailsService , UserService {
         try {
             int idByEmail = userRepository.findUserIdByEmailAddress(email);
             if (idByEmail == 0) {
-                return new ResponseDTO(VarList.Bad_Request, "No Manager found", null);
+                return new ResponseDTO(VarList.Bad_Request, "No Service Provider found", null);
             }
             return new ResponseDTO(VarList.OK, "Success", idByEmail);
         }catch (Exception e) {
@@ -73,15 +75,15 @@ public class UserServiceImpl implements UserDetailsService , UserService {
     }
 
     @Override
-    public ResponseDTO getAllManagerIds() {
+    public ResponseDTO getAllServiceProviderIds() {
         try {
-            List<Integer> managerIds = userRepository.findAllManagerIds();
+            List<Integer> providerIds = userRepository.findAllServiceProviderIds();
 
-            if (managerIds.isEmpty()) {
-                return new ResponseDTO(VarList.Bad_Request, "No managers found", null);
+            if (providerIds.isEmpty()) {
+                return new ResponseDTO(VarList.Bad_Request, "No service providers found", null);
             }
 
-            return new ResponseDTO(VarList.OK, "Success", managerIds);
+            return new ResponseDTO(VarList.OK, "Success", providerIds);
 
         } catch (Exception e) {
             return new ResponseDTO(VarList.Internal_Server_Error, "Internal server error: " + e.getMessage(), null);
@@ -95,9 +97,9 @@ public class UserServiceImpl implements UserDetailsService , UserService {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                getAuthority(user)
+                user.getEmail(), // Use email as the username
+                user.getPassword(), // Password
+                getAuthority(user) // Convert role to GrantedAuthority
         );
     }
 
@@ -106,10 +108,12 @@ public class UserServiceImpl implements UserDetailsService , UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
+        // Check if documents exist
         if (user.getIdProofPath() == null && user.getAddressProofPath() == null) {
             return new ResponseDTO(VarList.Not_Found, "No documents found for user", null);
         }
 
+        // Create response data
         Map<String, String> documents = new HashMap<>();
         documents.put("idProofPath", user.getIdProofPath());
         documents.put("addressProofPath", user.getAddressProofPath());
@@ -119,12 +123,16 @@ public class UserServiceImpl implements UserDetailsService , UserService {
     }
 
     @Override
-    public ResponseDTO updateVerificationStatus(int userId, String status) throws ResourceNotFoundException {
+    public ResponseDTO updateVerificationStatus(int userId, String status)
+            throws ResourceNotFoundException {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
+        // Update verification status
         user.setVerificationStatus(status);
         userRepository.save(user);
+        // Return minimal response
         return new ResponseDTO(VarList.OK, "Verification status updated", null);
     }
 
@@ -133,25 +141,34 @@ public class UserServiceImpl implements UserDetailsService , UserService {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             return VarList.Not_Acceptable;
         } else {
+            // Map UserDTO to User entity
             User user = modelMapper.map(userDTO, User.class);
+
+            // Encrypt the password
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
+            // Set default role if not provided
             if (user.getRole() == null) {
-                user.setRole(UserRole.CUSTOMER);
+                user.setRole(UserRole.CUSTOMER); // Default role
             }
+
+            // Set default verification status if not provided
             if (user.getVerificationStatus() == null) {
-                user.setVerificationStatus("Pending");
+                user.setVerificationStatus("Pending"); // Example default value
             }
             if (user.getStatus() == null) {
-                user.setStatus("Active");
+                user.setStatus("Active"); // Example default value
             }
             userRepository.save(user);
+            // Return success response
             return VarList.Created;
         }
     }
 
+
     public int updateUserPartial(UserDTO userDTO) {
+        // 1. Fetch the existing user
         Optional<User> existingUser = userRepository.findById(userDTO.getUserId());
 
         if (!existingUser.isPresent()) {
@@ -160,6 +177,7 @@ public class UserServiceImpl implements UserDetailsService , UserService {
 
         User user = existingUser.get();
 
+        // 2. Update only the fields that are present in the DTO
         if (userDTO.getName() != null) {
             user.setName(userDTO.getName());
         }
@@ -185,13 +203,14 @@ public class UserServiceImpl implements UserDetailsService , UserService {
             user.setAddressProofPath(userDTO.getAddressProofPath());
         }
 
+        // 3. Save the updated user
         userRepository.save(user);
 
         return VarList.Updated;
     }
-
     @Override
     public ResponseDTO toggleUserStatus(int userId) {
+        // Check if user exists
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
             return new ResponseDTO(VarList.Not_Found, "User not found with id: " + userId, null);
@@ -199,11 +218,15 @@ public class UserServiceImpl implements UserDetailsService , UserService {
 
         User user = optionalUser.get();
 
-        String newStatus = user.getStatus().equals("Active") ? "Inactive" : "Active";
+        // Toggle the status
+        String newStatus = user.getStatus().equals("Active")
+                ? "Inactive"
+                : "Active";
 
         user.setStatus(newStatus);
         userRepository.save(user);
 
+        // Return success response
         return new ResponseDTO(VarList.OK, "User status updated successfully", newStatus);
     }
 
@@ -213,24 +236,33 @@ public class UserServiceImpl implements UserDetailsService , UserService {
             return new ResponseDTO(VarList.Not_Found, "User not found with id: " + userId, null);
         }
 
+        // Delete the user
         userRepository.deleteById(userId);
 
+        // Return success response
         return new ResponseDTO(VarList.OK, "User deleted successfully", null);
     }
 
     @Override
     public int changePassword(String token, String currentPassword, String newPassword) {
+        // Extract username from token
         String username = jwtTokenUtil.getUsernameFromToken(token);
+
+        // Find user by username
         User user = userRepository.findByEmail(username);
 
+
+        // Verify current password
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             return VarList.Unauthorized;
         }
 
+        // Validate new password (add your own validation rules)
         if (newPassword == null || newPassword.trim().isEmpty()) {
             return VarList.Bad_Request;
         }
 
+        // Update password
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
@@ -239,20 +271,27 @@ public class UserServiceImpl implements UserDetailsService , UserService {
 
     @Override
     public ResponseDTO getAllUsers() {
+        System.out.println("**********************************************************");
         List<User> user = userRepository.findAll();
         List<UserDTO> dtos = new ArrayList<>();
 
         for (User users : user) {
             UserDTO dto = modelMapper.map(users, UserDTO.class);
+
             dtos.add(dto);
         }
+        System.out.println(dtos);
         return new ResponseDTO(200, "Success", dtos);
     }
 
     @Override
     public ResponseDTO getUserById(int userId) {
         Optional<User> user = userRepository.findById(userId);
+
         UserDTO dto = modelMapper.map(user, UserDTO.class);
+
         return new ResponseDTO(200, "Success", dto);
     }
+    
+
 }

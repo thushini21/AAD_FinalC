@@ -50,5 +50,4 @@ public class Service {
             this.serviceProvider.setUserId(serviceProviderId);
         }
     }
-
 }

@@ -1,5 +1,4 @@
 package com.example.salooniveryvells.Repo;
-
 import com.example.salooniveryvells.Entity.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
+
     // Find bookings by customer ID
     List<Booking> findByCustomer_UserId(int customerId);
 
@@ -28,7 +28,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     List<Booking> findByStatusIn(List<String> pending);
 
 
-    // For Customers: Only fetch bookings where they are the customer
+    // For Customers , Only fetch bookings where they are the customer
     @Query("SELECT b FROM Booking b WHERE " +
             "b.customer.userId = :customerId AND " +
             "(:status IS NULL OR b.status = :status) AND " +

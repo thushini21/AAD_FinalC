@@ -4,11 +4,13 @@ package com.example.salooniveryvells.Controller;
 import com.example.salooniveryvells.Dto.ResponseDTO;
 import com.example.salooniveryvells.Dto.ServiceDTO;
 import com.example.salooniveryvells.Service.ServiceService;
-import com.example.salooniveryvells.Util.VarList;
+import com.example.salooniveryvells.Utill.VarList;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,15 +22,16 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-
 @RestController
-@RequestMapping(name = "api/v1/services")
+@RequestMapping("api/v1/services")
 public class ServiceController {
+
     @Autowired
     private ServiceService serviceService;
 
     @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO> addService(@RequestPart("serviceDTO") ServiceDTO serviceDTO,
+    @PreAuthorize("hasAuthority('SERVICE_PROVIDER')")
+    public ResponseEntity<ResponseDTO> addService(@Valid @RequestPart("serviceDTO") ServiceDTO serviceDTO,
                                                   @RequestPart("file") MultipartFile file) {
 
 
@@ -49,10 +52,10 @@ public class ServiceController {
 
                 imagePath = (filename);
             }
-            // Set image path in DTO
+
             serviceDTO.setImage(imagePath);
 
-            // Save to database
+
             int result = serviceService.addService(serviceDTO);
 
             if (result == VarList.Created) {
@@ -70,8 +73,9 @@ public class ServiceController {
         }
     }
 
+
     @GetMapping("/by-category/{categoryId}")
-    public ResponseEntity<ResponseDTO> getServicesByCategoryId(
+    public ResponseEntity<ResponseDTO> getServicesByCategoryId(@Valid
             @PathVariable int categoryId) {
         try {
             ResponseDTO responseDTO = serviceService.getServicesByCategoryId(categoryId);
@@ -82,7 +86,6 @@ public class ServiceController {
                     .body(new ResponseDTO(VarList.Internal_Server_Error,
                             "Error: " + e.getMessage(), null));
         }
-
     }
 
 
@@ -93,7 +96,7 @@ public class ServiceController {
     }
 
     @GetMapping("/{serviceId}")
-    public ResponseEntity<ResponseDTO> getServiceById(@PathVariable int serviceId) {
+    public ResponseEntity<ResponseDTO> getServiceById(@Valid @PathVariable int serviceId) {
         try {
             ResponseDTO responseDTO = serviceService.getServiceById(serviceId);
             return ResponseEntity.ok()
@@ -106,33 +109,36 @@ public class ServiceController {
     }
 
     @GetMapping("/{serviceId}/has-bookings")
-    public ResponseEntity<Boolean> hasAssociatedBookings(@PathVariable int serviceId) {
+    public ResponseEntity<Boolean> hasAssociatedBookings(@Valid @PathVariable int serviceId) {
         boolean hasBookings = serviceService.hasAssociatedBookings(serviceId);
         return ResponseEntity.ok(hasBookings);
     }
+
+
     @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO> updateService(
+    @PreAuthorize("hasAuthority('SERVICE_PROVIDER')")
+    public ResponseEntity<ResponseDTO> updateService(@Valid
             @RequestPart("serviceDTO") ServiceDTO serviceDTO,
             @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             String uploadDir = "FrontEnd/view/uploads/";
 
-            // Handle image update
+
             if (file != null && !file.isEmpty()) {
-                // Generate new filename
+
                 String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
-                // Ensure directory exists
+
                 File directory = new File(uploadDir);
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
 
-                // Save new file
+
                 Path path = Paths.get(uploadDir + filename);
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-                // Delete old image if exists
+
                 if (serviceDTO.getImage() != null) {
                     Path oldImagePath = Paths.get(uploadDir + serviceDTO.getImage());
                     Files.deleteIfExists(oldImagePath);
@@ -141,7 +147,7 @@ public class ServiceController {
                 serviceDTO.setImage(filename);
             }
 
-            // Update service
+
             int result = serviceService.updateService(serviceDTO);
 
             if (result == VarList.Updated) {
@@ -166,16 +172,9 @@ public class ServiceController {
         }
     }
 
-
     @DeleteMapping("/{serviceId}")
-    public ResponseEntity<ResponseDTO> deleteService(@PathVariable int serviceId) {
+    public ResponseEntity<ResponseDTO> deleteService(@Valid @PathVariable int serviceId) {
         ResponseDTO response = serviceService.deleteService(serviceId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
-
-
-
-
-
-
 }

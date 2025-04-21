@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Ivory Veils Salon</title>
+  <title>Login - Ivory Veil</title>
   <link rel="stylesheet" href="../css/login.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -29,7 +29,7 @@
       <button class="back-btn" onclick="goBack()">
         <i class="fas fa-arrow-left"></i> Back
       </button>
-      <h2>Login to Your Salon Account</h2>
+      <h2>Login to Your Account</h2>
       <form id="loginForm">
         <div class="form-group">
           <label for="email">Email</label>
@@ -49,7 +49,7 @@
 
     <!-- Right Side: Image -->
     <div class="login-image">
-      <img src="../images/images/logo.png" alt="Salon Login Image">
+      <img src="../view/uploads/ChatGPT%20Image%20Apr%2020,%202025,%2009_26_39%20PM.png" alt="Login Image">
     </div>
   </div>
 </section>
@@ -57,7 +57,7 @@
 <!-- Footer -->
 <footer class="footer">
   <div class="container">
-    <p>&copy; 2025 Ivory Veils. All rights reserved.</p>
+    <p>&copy;  2025 Ivory Veils Salon. All rights reserved.</p>
     <div class="social-links">
       <a href="#"><i class="fab fa-facebook"></i></a>
       <a href="#"><i class="fab fa-twitter"></i></a>
@@ -65,14 +65,15 @@
     </div>
   </div>
 </footer>
-
-<script src="../js/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 <script src="../js/login.js"></script>
+
 <script>
   // Back Button Functionality
   function goBack() {
-    window.history.back();
+    window.history.back(); // Go back to the previous page
   }
 </script>
 </body>

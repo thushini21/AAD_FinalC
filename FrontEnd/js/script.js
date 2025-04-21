@@ -73,8 +73,8 @@ function login() {
                 const role = decodedToken.role;
 
                 switch(role) {
-                    case "MANAGER":
-                        window.location.href = "../view/managerdashboard.html";
+                    case "SERVICE_PROVIDER":
+                        window.location.href = "../view/providerdashboard.html";
                         break;
                     case "CUSTOMER":
                         window.location.href = "../view/customerdashboard.html";
@@ -114,4 +114,38 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
 
     alert('Message sent successfully!');
     this.reset();
+});
+
+// Scroll animation handler
+function handleScrollAnimations() {
+    const elements = document.querySelectorAll('[data-animate], .service-card, .testimonial-card');
+    const windowHeight = window.innerHeight;
+
+    elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const animationPoint = windowHeight / 1.2;
+
+        if (elementPosition < animationPoint) {
+            element.classList.add('animate');
+        }
+    });
+}
+
+// Initialize animations
+window.addEventListener('scroll', handleScrollAnimations);
+window.addEventListener('load', handleScrollAnimations);
+
+// Add data-animate attribute to sections
+document.querySelectorAll('.about-content, .contact-content').forEach(el => {
+    el.setAttribute('data-animate', 'true');
+});
+
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
 });

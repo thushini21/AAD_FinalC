@@ -1,7 +1,7 @@
 package com.example.salooniveryvells.Repo;
 
-import com.example.salooniveryvells.Enum.UserRole;
 import com.example.salooniveryvells.Entity.User;
+import com.example.salooniveryvells.enums.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,31 +11,22 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
-    // Find user by email
-    User findByEmail(String email);
-
-    // Check if user exists by email
+    // Custom query methods can be added here
+    User findByEmail(String email); // Find user by email
     boolean existsByEmail(String email);
+    List<User> findByRole(UserRole role); // Find users by role (e.g., CUSTOMER, manager)
+    List<User> findByVerificationStatus(String verificationStatus); // Find users by verification status
 
-    // Find users by role (e.g., CUSTOMER, MANAGER, ADMIN)
-    List<User> findByRole(UserRole role);
-
-    // Find users by verification status
-    List<User> findByVerificationStatus(String verificationStatus);
-
-    // Find user by userId
     User findByUserId(int userId);
 
-    // Find all user emails (if needed, return List<String>)
-    @Query(value = "SELECT email FROM user", nativeQuery = true)
-    List<String> getAllEmails();
+    @Query(value = "SELECT email FROM user" ,nativeQuery = true)
+    List<User> getUsers(User user);
 
-    // Get all manager user IDs
-    @Query("SELECT u.userId FROM User u WHERE u.role = 'MANAGER'")
-    List<Integer> findAllManagerIds();
+    @Query("SELECT u.userId FROM User u WHERE u.role = 'SERVICE_PROVIDER'")
+    List<Integer> findAllServiceProviderIds();
 
-    // Get userId by email
     @Query("SELECT u.userId FROM User u WHERE u.email = :email")
     int findUserIdByEmailAddress(@Param("email") String email);
+
+
 }

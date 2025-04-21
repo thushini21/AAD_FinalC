@@ -11,11 +11,12 @@ import com.example.salooniveryvells.Repo.CategoryRepository;
 import com.example.salooniveryvells.Repo.ServiceRepository;
 import com.example.salooniveryvells.Repo.UserRepository;
 import com.example.salooniveryvells.Service.ServiceService;
-import com.example.salooniveryvells.Util.VarList;
+import com.example.salooniveryvells.Utill.VarList;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-;import java.util.ArrayList;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -34,12 +35,17 @@ public class ServiceServiceImpl implements ServiceService {
     @Autowired
     private final BookingRepository bookingRepository;
 
-
     public ServiceServiceImpl(BookingRepository bookingRepository,
                               ServiceRepository serviceRepository) {
         this.bookingRepository = bookingRepository;
         this.serviceRepository = serviceRepository;
     }
+
+    @Override
+    public boolean hasAssociatedBookings(int serviceId) {
+        return bookingRepository.existsByServiceServiceId(serviceId);
+    }
+
     @Override
     public int addService(ServiceDTO serviceDTO) {
         try {
@@ -79,11 +85,12 @@ public class ServiceServiceImpl implements ServiceService {
         } catch (Exception e) {
             System.err.println("Unexpected error: " + e.getMessage());
             return VarList.Internal_Server_Error; // 500
-        }    }
+        }
+    }
 
     @Override
     public ResponseDTO getServicesByCategoryId(int categoryId) {
-        List<Service> services = serviceRepository.findByCategory_CategoryId(categoryId); // ✅ Fixed line
+        List<Service> services = serviceRepository.findByCategoryId(categoryId);
         List<ServiceDTO> dtos = new ArrayList<>();
 
         for (Service service : services) {
@@ -96,6 +103,7 @@ public class ServiceServiceImpl implements ServiceService {
             dto.setCategoryId(service.getCategory().getCategoryId());
             dto.setServiceProviderId(service.getServiceProvider().getUserId());
 
+            // Fix image URL construction
             if (service.getImage() != null) {
                 dto.setImage(service.getImage());
             } else {
@@ -107,7 +115,6 @@ public class ServiceServiceImpl implements ServiceService {
 
         return new ResponseDTO(200, "Success", dtos);
     }
-
 
     @Override
     public ResponseDTO getAllServices() {
@@ -127,11 +134,6 @@ public class ServiceServiceImpl implements ServiceService {
             dto.setImage("");
         }
         return new ResponseDTO(200, "Success", dto);
-    }
-
-    @Override
-    public boolean hasAssociatedBookings(int serviceId) {
-        return bookingRepository.existsByServiceServiceId(serviceId);
     }
 
     @Override
@@ -171,7 +173,6 @@ public class ServiceServiceImpl implements ServiceService {
             return VarList.Internal_Server_Error;
         }
     }
-
     @Override
     public ResponseDTO deleteService(int serviceId) {
         if (!serviceRepository.existsById(serviceId)) {
@@ -180,12 +181,4 @@ public class ServiceServiceImpl implements ServiceService {
         serviceRepository.deleteById(serviceId);
         return new ResponseDTO(200, "Service deleted successfully", null);
     }
-    }
-
-
-
-
-
-
-
-
+}

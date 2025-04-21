@@ -7,14 +7,16 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
       font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      background-color: #fdf7f2; /* Light brownish background */
-      color: #4e342e; /* Deep brown text */
+      background-color: #f9f9f9;
+      color: #333;
     }
 
     .container {
@@ -26,9 +28,9 @@
 
     /* Navbar */
     .navbar {
-      background: linear-gradient(10deg, #a1887f, #6d4c41); /* Brown gradient */
+      background: linear-gradient(10deg, #FFD700,#e3c10e);
       transition: all 0.3s ease-in-out;
-      color: #fff;
+      color: #000;
       padding: 0.5rem 0;
       position: sticky;
       top: 0;
@@ -46,7 +48,7 @@
       font-size: 1.5rem;
       font-weight: bold;
       text-decoration: none;
-      color: #fff;
+      color: #000;
     }
 
     .navbar .nav-links {
@@ -56,7 +58,7 @@
     }
 
     .navbar .nav-links a {
-      color: #fff;
+      color: #000;
       text-decoration: none;
       font-weight: bold;
       font-size: 1rem;
@@ -64,13 +66,13 @@
     }
 
     .navbar .nav-links a:hover {
-      color: #d7ccc8; /* Lighter brown on hover */
+      color: white;
     }
 
     /* Login Button */
     .logout-btn {
-      background-color: #d7ccc8; /* Light brown */
-      color: #4e342e;
+      background-color: white;
+      color: #000;
       padding: 0.5rem 1.5rem;
       text-decoration: none;
       border-radius: 5px;
@@ -80,7 +82,7 @@
     }
 
     .logout-btn:hover {
-      background-color: #5d4037;
+      background-color: #666666;
       color: white;
     }
 
@@ -93,7 +95,7 @@
     /* User Management Styles */
     .user-card {
       border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(93, 64, 55, 0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s;
       margin-bottom: 20px;
       background-color: white;
@@ -111,7 +113,7 @@
     .filter-section {
       background-color: white;
       border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(93, 64, 55, 0.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       padding: 20px;
       margin-bottom: 30px;
     }
@@ -123,7 +125,7 @@
 
     .empty-state i {
       font-size: 5rem;
-      color: #d7ccc8;
+      color: #dee2e6;
       margin-bottom: 20px;
     }
 
@@ -146,15 +148,15 @@
     }
 
     .badge-admin {
-      background-color: #4e342e;
+      background-color: #6f42c1;
     }
 
     .badge-provider {
-      background-color: #8d6e63;
+      background-color: #20c997;
     }
 
     .badge-customer {
-      background-color: #a1887f;
+      background-color: #fd7e14;
     }
 
     /* Responsive adjustments */
@@ -163,7 +165,7 @@
         font-size: 1rem;
         font-weight: bold;
         text-decoration: none;
-        color: #fff;
+        color: #000;
       }
       .logout-btn {
         padding: 0.5rem 1rem;
@@ -195,13 +197,12 @@
       }
     }
   </style>
-
 </head>
 <body>
 <!-- Navbar -->
 <nav class="navbar">
   <div class="container">
-    <a href="#" class="logo">Ivory_Veils</a>
+    <a href="#" class="logo">Ivory Veils</a>
     <ul class="nav-links">
       <li><a href="../view/admindashboard.html">Home</a></li>
       <li><a href="../view/users.html"  style="color: white">Users</a></li>
@@ -326,10 +327,6 @@
             </div>
             <div class="col-md-6">
               <div class="mb-3">
-                <label for="userPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="userPassword" required>
-              </div>
-              <div class="mb-3">
                 <label for="userRole" class="form-label">Role</label>
                 <select class="form-select" id="userRole" required>
                   <option value="CUSTOMER">Customer</option>
@@ -440,6 +437,8 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
   // Base API URL - adjust this to your backend endpoint
   const API_BASE_URL = 'http://localhost:8080/api/v1';
@@ -471,7 +470,7 @@
     $('#refresh-btn').click(refreshUsers);
     $('#searchInput').on('keyup', debounce(searchUsers, 300));
     $('#add-user-btn').click(showAddUserModal);
-    $('#saveUserBtn').click(saveUser);
+    $('#saveUserBtn').click(validateAndSaveUser);
 
     // Pagination
     $(document).on('click', '.page-link', function(e) {
@@ -487,6 +486,14 @@
       }
 
       loadUsers();
+    });
+
+    // Role-specific field visibility
+    $('#userRole').change(function() {
+      const role = $(this).val();
+      $('.role-specific-field').hide();
+      if (role === 'SERVICE_PROVIDER') $('#serviceAreaField').show();
+      if (role === 'ADMIN') $('#adminLevelField').show();
     });
   });
 
@@ -513,13 +520,18 @@
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       success: function(response) {
-        allUsers = response.data.data; // Store all users
-        renderUsers(allUsers); // Initially render all users
+        allUsers = response.data.data;
+        renderUsers(allUsers);
         totalUsers = allUsers.length;
         updatePagination();
       },
       error: function(xhr) {
-        showError('Failed to load users');
+        Swal.fire({
+          title: 'Error!',
+          text: xhr.responseJSON?.message || 'Failed to load users',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
         console.error('Error loading users:', xhr.responseText);
       }
     });
@@ -583,6 +595,9 @@
                   <i class="bi bi-file-earmark-text"></i>
                 </button>
                 ` : ''}
+                <button class="btn btn-sm btn-outline-primary" onclick="editUser(${user.userId})">
+                  <i class="bi bi-pencil"></i>
+                </button>
                 <button class="btn btn-sm btn-outline-${user.status === 'Active' ? 'danger' : 'success'}"
                   onclick="toggleStatus(${user.userId}, '${user.status}')">
                   <i class="bi bi-${user.status === 'Active' ? 'x-circle' : 'check-circle'}"></i>
@@ -696,7 +711,7 @@
       verification: 'ALL',
       search: ''
     };
-    renderUsers(allUsers); // Show all users again
+    renderUsers(allUsers);
     totalUsers = allUsers.length;
     updatePagination();
   }
@@ -724,33 +739,13 @@
     `);
   }
 
-  // Show error message
-  function showError(message) {
-    $('#users-container').html(`
-      <div class="alert alert-danger">
-        <i class="bi bi-exclamation-triangle"></i> ${message}
-      </div>
-    `);
-  }
-
-  // Debounce function for search
-  function debounce(func, wait) {
-    let timeout;
-    return function() {
-      const context = this, args = arguments;
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), wait);
-    };
-  }
-
   // User CRUD Operations
   function editUser(userId) {
-    console.log("fgfgfsgfgfghfdhfd",userId)
     $.ajax({
       url: `${API_BASE_URL}/users/${userId}`,
       type: 'GET',
       success: function(res) {
-     const user =  res.data.data;
+        const user = res.data.data;
 
         $('#modalTitle').text('Edit User');
         $('#userId').val(user.userId);
@@ -775,7 +770,12 @@
         modal.show();
       },
       error: function(xhr) {
-        showError('Failed to load user details');
+        Swal.fire({
+          title: 'Error!',
+          text: xhr.responseJSON?.message || 'Failed to load user details',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
         console.error('Error loading user:', xhr.responseText);
       }
     });
@@ -790,17 +790,54 @@
     modal.show();
   }
 
+  // Validate user data before saving
+  function validateAndSaveUser() {
+    const userId = $('#userId').val();
+    const isEdit = !!userId;
+
+    // Basic validation
+    if (!$('#userName').val().trim()) {
+      showValidationError('Name is required');
+      return;
+    }
+
+    if (!$('#userEmail').val().trim()) {
+      showValidationError('Email is required');
+      return;
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test($('#userEmail').val().trim())) {
+      showValidationError('Please enter a valid email address');
+      return;
+    }
+
+
+    // If all validations pass, proceed to save
+    saveUser();
+  }
+
+  function showValidationError(message) {
+    Swal.fire({
+      title: 'Validation Error',
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
+  }
+
   function saveUser() {
     const userId = $('#userId').val();
     const isEdit = !!userId;
-    const url = isEdit ? `${API_BASE_URL}/users/${userId}` : `${API_BASE_URL}/users`;
-    const method = isEdit ? 'PUT' : 'POST';
+    const url =`${API_BASE_URL}/users/${userId}`;
+    const method = 'PUT';
 
     const userData = {
-      name: $('#userName').val(),
-      email: $('#userEmail').val(),
-      phoneNumber: $('#userPhone').val(),
-      address: $('#userAddress').val(),
+      name: $('#userName').val().trim(),
+      email: $('#userEmail').val().trim(),
+      phoneNumber: $('#userPhone').val().trim(),
+      address: $('#userAddress').val().trim(),
       role: $('#userRole').val(),
       status: $('#userStatus').val(),
       verificationStatus: $('#verificationStatus').val()
@@ -808,10 +845,10 @@
 
     // Add role-specific fields
     if (userData.role === 'SERVICE_PROVIDER') {
-      userData.serviceArea = $('#serviceArea').val();
+      userData.serviceArea = $('#serviceArea').val().trim();
     }
     if (userData.role === 'ADMIN') {
-      userData.adminLevel = $('#adminLevel').val();
+      userData.adminLevel = $('#adminLevel').val().trim();
     }
 
     // Only include password for new users
@@ -828,11 +865,23 @@
         'Authorization': `Bearer ${token}`
       },
       success: function() {
-        $('#userModal').modal('hide');
-        loadUsers();
+        Swal.fire({
+          title: 'Success!',
+          text: isEdit ? 'User updated successfully' : 'User created successfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          $('#userModal').modal('hide');
+          loadUsers();
+        });
       },
       error: function(xhr) {
-        showError(isEdit ? 'Failed to update user' : 'Failed to create user');
+        Swal.fire({
+          title: 'Error!',
+          text: xhr.responseJSON?.message || (isEdit ? 'Failed to update user' : 'Failed to create user'),
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
         console.error('Error saving user:', xhr.responseText);
       }
     });
@@ -840,25 +889,46 @@
 
   function toggleStatus(userId, currentStatus) {
     const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
+    const action = newStatus === 'Active' ? 'activate' : 'deactivate';
 
-    if (!confirm(`Are you sure you want to ${newStatus === 'Active' ? 'activate' : 'deactivate'} this user?`)) {
-      return;
-    }
-
-    $.ajax({
-      url: `${API_BASE_URL}/users/${userId}/status`,
-      type: 'PATCH',
-      data: JSON.stringify({ status: newStatus }),
-      contentType: 'application/json',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      success: function() {
-        loadUsers();
-      },
-      error: function(xhr) {
-        showError('Failed to update user status');
-        console.error('Error updating status:', xhr.responseText);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You want to ${action} this user!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `Yes, ${action} it!`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: `${API_BASE_URL}/users/${userId}/status`,
+          type: 'PATCH',
+          data: JSON.stringify({ status: newStatus }),
+          contentType: 'application/json',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          success: function() {
+            Swal.fire({
+              title: 'Success!',
+              text: `User ${newStatus.toLowerCase()} successfully`,
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              loadUsers();
+            });
+          },
+          error: function(xhr) {
+            Swal.fire({
+              title: 'Error!',
+              text: xhr.responseJSON?.message || 'Failed to update user status',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+            console.error('Error updating status:', xhr.responseText);
+          }
+        });
       }
     });
   }
@@ -893,15 +963,26 @@
           const modal = new bootstrap.Modal($('#docsModal')[0]);
           modal.show();
         } else {
-          showError(response.message);
+          Swal.fire({
+            title: 'Error!',
+            text: response.message,
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
         }
       },
       error: function(xhr) {
-        showError('Failed to load user documents');
+        Swal.fire({
+          title: 'Error!',
+          text: xhr.responseJSON?.message || 'Failed to load user documents',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
         console.error('Error loading documents:', xhr.responseText);
       }
     });
   }
+
   // Verification actions
   $('#approveVerificationBtn').click(function() {
     updateVerification('APPROVED');
@@ -913,30 +994,68 @@
 
   function updateVerification(status) {
     const userId = $('#docsModal').data('userId');
+    const action = status === 'APPROVED' ? 'approve' : 'reject';
 
-    // Build URL with query parameters
-    let url = `${API_BASE_URL}/users/${userId}/verification?status=${status}`;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You want to ${action} this verification!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `Yes, ${action} it!`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let url = `${API_BASE_URL}/users/${userId}/verification?status=${status}`;
 
-    $.ajax({
-      url: url,
-      type: 'PATCH',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      success: function(response) {
-        if (response.code === 200) {
-          $('#docsModal').modal('hide');
-          loadUsers();
-        } else {
-          showError(response.message);
-        }
-      },
-      error: function(xhr) {
-        showError(xhr.responseJSON?.message || 'Failed to update verification status');
-        console.error('Error updating verification:', xhr.responseText);
+        $.ajax({
+          url: url,
+          type: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          success: function(response) {
+            if (response.code === 200) {
+              Swal.fire({
+                title: 'Success!',
+                text: `Verification ${action}d successfully`,
+                icon: 'success',
+                confirmButtonText: 'OK'
+              }).then(() => {
+                $('#docsModal').modal('hide');
+                loadUsers();
+              });
+            } else {
+              Swal.fire({
+                title: 'Error!',
+                text: response.message,
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
+            }
+          },
+          error: function(xhr) {
+            Swal.fire({
+              title: 'Error!',
+              text: xhr.responseJSON?.message || `Failed to ${action} verification`,
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+            console.error('Error updating verification:', xhr.responseText);
+          }
+        });
       }
     });
+  }
 
+  // Debounce function for search
+  function debounce(func, wait) {
+    let timeout;
+    return function() {
+      const context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
   }
 </script>
 </body>

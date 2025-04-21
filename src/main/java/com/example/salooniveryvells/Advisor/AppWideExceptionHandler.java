@@ -1,6 +1,6 @@
 package com.example.salooniveryvells.Advisor;
 
-import com.example.salooniveryvells.Util.ResponseUtil;
+import com.example.salooniveryvells.Utill.ResponseUtil;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

@@ -1,9 +1,11 @@
 package com.example.salooniveryvells.Controller;
 
+
 import com.example.salooniveryvells.Dto.CategoryDTO;
 import com.example.salooniveryvells.Dto.ResponseDTO;
 import com.example.salooniveryvells.Service.CategoryService;
-import com.example.salooniveryvells.Util.VarList;
+import com.example.salooniveryvells.Utill.VarList;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,14 +25,15 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/v1/categories")
 public class CategoryController {
+
     @Autowired
     private CategoryService categoryService;
 
-
     @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO> addCategory(
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> addCategory(@Valid
             @RequestPart("categoryDTO") CategoryDTO categoryDTO,
-            @RequestPart("file") MultipartFile file) {  // Changed from @RequestParam to @RequestPart
+                                                   @RequestPart("file") MultipartFile file) {  // Changed from @RequestParam to @RequestPart
         System.out.println("Received categoryDTO: " + categoryDTO);
         System.out.println("Received file: " + (file != null ? file.getOriginalFilename() : "null"));
         try {
@@ -47,7 +50,7 @@ public class CategoryController {
                 Path path = Paths.get(uploadDir + filename);
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-                imagePath = (filename);
+              imagePath = (filename);
             }
             // Set image path in DTO
             categoryDTO.setImage(imagePath);
@@ -105,35 +108,36 @@ public class CategoryController {
 
     @GetMapping("/id-by-name")
     @PreAuthorize("hasAuthority('SERVICE_PROVIDER')")
-    public ResponseEntity<ResponseDTO> getCategoryIdByName(
+    public ResponseEntity<ResponseDTO> getCategoryIdByName(@Valid
             @RequestParam String categoryName) {
-        try {
-            ResponseDTO responseDTO = categoryService.getCategoryIdByName(categoryName);
-            return ResponseEntity.ok()
-                    .body(new ResponseDTO(VarList.OK, "Success", responseDTO));
-        }catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body(new ResponseDTO(VarList.Internal_Server_Error,
-                            "Error: " + e.getMessage(), null));
-        }
+try {
+    ResponseDTO responseDTO = categoryService.getCategoryIdByName(categoryName);
+    return ResponseEntity.ok()
+            .body(new ResponseDTO(VarList.OK, "Success", responseDTO));
+}catch (Exception e) {
+    return ResponseEntity.internalServerError()
+            .body(new ResponseDTO(VarList.Internal_Server_Error,
+                    "Error: " + e.getMessage(), null));
+}
     }
 
 
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<ResponseDTO> getCategoryById(@PathVariable int categoryId) {
+    public ResponseEntity<ResponseDTO> getCategoryById(@Valid @PathVariable int categoryId) {
         ResponseDTO response = categoryService.getCategoryById(categoryId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 
     @GetMapping("/{categoryId}/has-services")
-    public ResponseEntity<Boolean> hasAssociatedServices(@PathVariable int categoryId) {
+    public ResponseEntity<Boolean> hasAssociatedServices(@Valid @PathVariable int categoryId) {
         boolean hasServices = categoryService.hasAssociatedServices(categoryId);
         return ResponseEntity.ok(hasServices);
     }
 
     @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO> updateCategory(
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> updateCategory(@Valid
             @RequestPart("categoryDTO") CategoryDTO categoryDTO,
             @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
@@ -189,7 +193,8 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<ResponseDTO> deleteCategory(@PathVariable int categoryId) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> deleteCategory(@Valid @PathVariable int categoryId) {
         ResponseDTO response = categoryService.deleteCategory(categoryId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }

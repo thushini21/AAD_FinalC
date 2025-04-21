@@ -5,10 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Service</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            color: #333;
         }
         .card {
             border-radius: 10px;
@@ -28,7 +36,7 @@
             transform: translateY(-5px);
         }
         .review-card {
-            border-left: 4px solid #0d6efd;
+            border-left: 4px solid #ffc107;
         }
         .rating-stars {
             color: #ffc107;
@@ -42,10 +50,448 @@
             padding: 0.25em 0.4em;
             vertical-align: middle;
         }
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875em;
+            display: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(10deg, #FFD700,#e3c10e);
+            transition: all 0.3s ease-in-out;
+            color: #000;
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-radius: 0% 0% 5% 5%;
+
+
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .navbar .nav-links a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover {
+            color: white;
+        }
+
+
+        /* Login Button */
+        .logout-btn {
+            background-color: white; /* Yellow accent */
+            color: #000; /* Dark text for contrast */
+            padding: 0.5rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #666666; /* Brighter yellow for hover */
+            color: white;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar .logo {
+                font-size: 1rem;
+                font-weight: bold;
+                text-decoration: none;
+                color: #000;
+            }
+            .login-btn {
+                background-color: white; /* Yellow accent */
+                color: #000; /* Dark text for contrast */
+                padding: 0.5rem 1.5rem;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 0.8rem;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .logo {
+                font-size: 0.8rem;
+                font-weight: bold;
+                text-decoration: none;
+                color: #000;
+            }
+
+            .login-btn {
+                background-color: white; /* Yellow accent */
+                color: #000; /* Dark text for contrast */
+                padding: 0.5rem 1.5rem;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 0.6rem;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+        }
+
+
+        /* Role Toggle */
+        .role-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: -2px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            transition: 0.4s;
+            border-radius: 20px;
+            border: 2px solid black;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: black;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #FFD700;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        #roleLabel {
+            font-size: 1rem;
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Login Button */
+        .login-btn {
+            background-color: white; /* Yellow accent */
+            color: #000; /* Dark text for contrast */
+            padding: 0.5rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background-color: #666666; /* Brighter yellow for hover */
+            color: white;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+
+            .navbar .logo {
+                font-size: 1rem;
+                font-weight: bold;
+                text-decoration: none;
+                color: #000;
+            }
+            #roleLabel {
+                font-size: 0.9rem;
+                color: #000;
+                font-weight: bold;
+            }
+            .login-btn {
+                background-color: white; /* Yellow accent */
+                color: #000; /* Dark text for contrast */
+                padding: 0.5rem 1.5rem;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 0.8rem;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .logo {
+                font-size: 0.8rem;
+                font-weight: bold;
+                text-decoration: none;
+                color: #000;
+            }
+            #roleLabel {
+                font-size: 0.7rem;
+                color: #000;
+                font-weight: bold;
+            }
+            .login-btn {
+                background-color: white; /* Yellow accent */
+                color: #000; /* Dark text for contrast */
+                padding: 0.5rem 1.5rem;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 0.6rem;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 3rem 0 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand {
+            flex: 1 1 300px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .footer-tagline {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            max-width: 250px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 2 1 600px;
+            justify-content: space-between;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            margin-bottom: 2rem;
+            padding-right: 1rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #FFD700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li i {
+            margin-right: 0.5rem;
+            color: #FFD700;
+            width: 20px;
+            text-align: center;
+        }
+
+        .footer-section a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-section a:hover {
+            color: #FFD700;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+        }
+
+        .social-links {
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 50%;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: #FFD700;
+            color: #2c3e50;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .footer-legal {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .footer-legal a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-legal a:hover {
+            color: #FFD700;
+        }
+
+        .footer-legal span {
+            margin: 0 0.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .footer-section {
+                flex: 1 1 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
-
+<nav class="navbar">
+    <div class="container">
+        <a href="#" class="logo">Ivory Veils</a>
+        <ul class="nav-links">
+            <li><a href="#" onclick="navigateHome()">Home</a></li>
+            <li><a href="../view/services.html">Services</a></li>
+            <li><a href="../view/mybookings.html">Bookings</a></li>
+        </ul>
+        <a href="../view/profile.html" class="logout-btn">
+            <i class="fas fa-user"></i> Profile
+        </a>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+</nav>
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -53,10 +499,10 @@
                 <div class="service-header">
                     <h1 id="service-name" class="mb-3">Loading service details...</h1>
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4 id="service-fixed-price" class="text-primary mb-0"></h4>
+                        <h4 id="service-fixed-price" class="text-warning mb-0"></h4>
                         <span id="service-rating" class="badge bg-warning text-dark"></span>
                     </div>
-                    <h6 id="hourly-rate" class="text-primary mb-0"></h6>
+                    <h6 id="hourly-rate" class="text-warning mb-0"></h6>
                 </div>
                 <div class="card-body">
                     <p id="service-description" class="lead"></p>
@@ -68,7 +514,7 @@
                                 <div>
                                     <h5 id="provider-name" class="mb-1">Loading provider...</h5>
                                     <p id="provider-rating" class="text-muted mb-1"></p>
-                                    <a id="provider-link" href="#" class="btn btn-sm btn-outline-primary">
+                                    <a id="provider-link" href="#" class="btn btn-sm btn-outline-warning">
                                         View Provider Profile
                                     </a>
                                 </div>
@@ -81,7 +527,7 @@
                         <h4><i class="bi bi-star-fill"></i> Service Reviews</h4>
                         <div id="reviews-container">
                             <div class="text-center py-4">
-                                <div class="spinner-border text-primary" role="status">
+                                <div class="spinner-border text-warning" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>
@@ -99,13 +545,15 @@
                             <div class="col-md-6">
                                 <label for="bookingDate" class="form-label">Booking Date</label>
                                 <input type="date" class="form-control" id="bookingDate" required>
+                                <div class="invalid-feedback" id="dateFeedback">Please select a valid date</div>
                             </div>
                             <div class="col-md-6">
                                 <label for="bookingTime" class="form-label">Booking Time</label>
                                 <input type="time" class="form-control" id="bookingTime" required>
+                                <div class="invalid-feedback" id="timeFeedback">Please select a valid time</div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 py-2">
+                        <button type="submit" class="btn btn-warning w-100 py-2">
                             <span id="submitText">Confirm Booking</span>
                             <span id="loadingSpinner" class="spinner-border spinner-border-sm"></span>
                         </button>
@@ -116,34 +564,273 @@
     </div>
 </div>
 
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3 class="footer-title">Ivory Veils</h3>
+                <p class="footer-tagline">Bringing beauty and elegance to your everyday life.</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 45 Elegant Ave, Ivory Veils Salon, Maharagama</li>
+                        <li><i class="fas fa-phone"></i> +94 77 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> contact@ivoryveilssalon.com</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            <p class="copyright">&copy;  2025 Ivory Veils Salon. All rights reserved.</p>
+
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <span>|</span>
+                <a href="#">Terms of Service</a>
+                <span>|</span>
+                <a href="#">Sitemap</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<!-- Add SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    function navigateHome() {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            // If no token, redirect to login
+            window.location.href = '../view/index.html';
+            return;
+        }
+
+        try {
+            // Decode the token to get the role
+            const decoded = jwt_decode(token);
+            const userRole = decoded.role; // Assuming your JWT has a 'role' claim
+
+            // Redirect based on role
+            if (userRole === 'CUSTOMER') {
+                window.location.href = '../view/index.html';
+            } else if (userRole === 'SERVICE_PROVIDER') {
+                window.location.href = '../view/providerdashboard.html';
+            } else {
+                // Default fallback if role isn't recognized
+                window.location.href = '../view/index.html';
+            }
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            window.location.href = 'login.html';
+        }
+    }
     $(document).ready(function() {
+
+
         // Get serviceId from URL
         const urlParams = new URLSearchParams(window.location.search);
         const serviceId = urlParams.get('serviceId');
 
         if (!serviceId) {
-            window.location.href = "../view/services.html";
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No service selected. Redirecting to services page...',
+                timer: 3000,
+                timerProgressBar: true,
+                willClose: () => {
+                    window.location.href = "../view/services.html";
+                }
+            });
             return;
         }
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        $('#bookingDate').attr('min', today);
+
         // First load service details, THEN provider details
         loadServiceDetails(serviceId).then(providerid => {
             if (providerid) {
                 loadProviderDetails(providerid);
             }
         });
-        loadReviews(serviceId);
+
+        getBookingsByServiceId(serviceId).then(bookings => {
+            const reviewsContainer = $('#reviews-container');
+            reviewsContainer.empty(); // Clear previous content
+
+            if (!bookings || bookings.length === 0){
+                reviewsContainer.html(`
+                    <div class="alert alert-info">
+                        No bookings found for this service
+                    </div>
+                `);
+                return;
+            }
+
+            // Extract booking IDs
+            const bookingIds = bookings.map(booking => booking.bookingId);
+
+            // Fetch reviews for all bookings at once
+            Promise.all(bookingIds.map(bookingId => getReviewsForBooking(bookingId)))
+                .then(allReviews => {
+                    const validReviews = allReviews.filter(reviews => reviews !== null && reviews !== undefined).flat();
+
+                    if (validReviews.length === 0) {
+                        reviewsContainer.html(`
+                            <div class="alert alert-info">
+                                No reviews yet
+                            </div>
+                        `);
+                        return;
+                    }
+
+                    // Display all reviews
+                    validReviews.forEach(review => {
+                        const reviewDate = new Date(review.createdAt).toLocaleDateString();
+                        reviewsContainer.append(`
+                            <div class="card review-card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5>Thushini</h5>
+                                        <div class="rating-stars" style="font-size: 30px">
+                                            ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+                                        </div>
+                                    </div>
+                                    <p class="text-muted small">2025/04/12</p>
+                                    <p>${review.comment}</p>
+                                </div>
+                            </div>
+                        `);
+                    });
+                })
+                .catch(error => {
+                    reviewsContainer.html(`
+                        <div class="alert alert-warning">
+                            Could not load reviews
+                        </div>
+                    `);
+                    console.error("Failed to fetch reviews:", error);
+                });
+        });
+
+        // Helper function to fetch reviews for a single booking
+        function getReviewsForBooking(bookingId) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: `http://localhost:8080/api/v1/reviews/get/${bookingId}`,
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    success: function(response) {
+                        if (response.data != null){
+                            resolve(response.data.data);
+                        } else {
+                            resolve(null);
+                        }
+                    },
+                    error: function(xhr) {
+                        resolve(null); // Still resolve, but with null
+                    }
+                });
+            });
+        }
 
         // Handle form submission
         $('#bookingForm').submit(async function(e) {
             e.preventDefault();
-            const serviceId = new URLSearchParams(window.location.search).get('serviceId');
-            await submitBooking(serviceId);
+            if (validateForm()) {
+                const serviceId = new URLSearchParams(window.location.search).get('serviceId');
+                await submitBooking(serviceId);
+            }
         });
+
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+
+            // Validate date
+            const dateInput = $('#bookingDate');
+            if (!dateInput.val()) {
+                dateInput.addClass('is-invalid');
+                $('#dateFeedback').show();
+                isValid = false;
+            } else {
+                dateInput.removeClass('is-invalid');
+                $('#dateFeedback').hide();
+            }
+
+            // Validate time
+            const timeInput = $('#bookingTime');
+            if (!timeInput.val()) {
+                timeInput.addClass('is-invalid');
+                $('#timeFeedback').show();
+                isValid = false;
+            } else {
+                timeInput.removeClass('is-invalid');
+                $('#timeFeedback').hide();
+            }
+
+            return isValid;
+        }
     });
+
+    function getBookingsByServiceId(serviceId) {
+        return new Promise((resolve) => {
+            $.ajax({
+                url: `http://localhost:8080/api/v1/bookings/service/${serviceId}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                success: function(response) {
+                    resolve(response.data.data);
+                },
+                error: function(xhr) {
+                    resolve(null); // Still resolve, but with null
+                }
+            });
+        });
+    }
 
     // Modified to return a Promise
     function loadServiceDetails(serviceId) {
@@ -161,34 +848,35 @@
                     $('#service-description').text(service.description);
                     $('#service-fixed-price').text(`Fixed Price: Rs.${service.fixedPrice.toFixed(2)}`);
                     $('#hourly-rate').text(`Hourly Rate: Rs.${service.hourlyRate.toFixed(2)}`);
-                    $('#service-rating').text(`${service.averageRating || 'No'} reviews`);
 
                     resolve(providerid); // Resolve the promise with providerid
                 },
                 error: function(xhr) {
-                    $('#service-details').html(`
-                    <div class="alert alert-danger">
-                        Failed to load service details.
-                        <a href="/services" class="alert-link">Browse services</a>
-                    </div>
-                `);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to load service details',
+                        footer: '<a href="/services">Browse services</a>'
+                    });
                     resolve(null); // Still resolve, but with null
                 }
             });
-        });}
+        });
+    }
+
     function loadProviderDetails(providerid) {
-        console.log("log function",providerid)
+        console.log("log function", providerid);
         $.ajax({
             url: `http://localhost:8080/api/v1/users/${providerid}`,
             method: 'GET',
             success: function(response) {
                 let provider = response.data.data;
-                console.log("provider",provider)
+                console.log("provider", provider);
                 $('#provider-name').text(provider.name);
 
                 // Verification badge
                 let verificationBadge = '';
-                if (provider.verificationStatus === 'Verified') {
+                if (provider.verificationStatus === 'APPROVED') {
                     verificationBadge = '<span class="badge bg-success ms-2">Verified</span>';
                 } else if (provider.verificationStatus === 'Pending') {
                     verificationBadge = '<span class="badge bg-danger text-dark ms-2">Not Verified</span>';
@@ -201,54 +889,10 @@
             },
             error: function() {
                 $('#provider-card').html(`
-                <div class="alert alert-warning m-0">
-                    Provider information not available
-                </div>
-            `);
-            }
-        });
-    }
-
-    function loadReviews(serviceId) {
-        $.ajax({
-            url: `http://localhost:8080/api/v1/services/${serviceId}/reviews`,
-            method: 'GET',
-            success: function(reviews) {
-                const container = $('#reviews-container');
-                container.empty();
-
-                if (reviews.length === 0) {
-                    container.html(`
-                    <div class="alert alert-info">
-                        No reviews yet for this service
+                    <div class="alert alert-warning m-0">
+                        Provider information not available
                     </div>
                 `);
-                    return;
-                }
-
-                reviews.forEach(review => {
-                    container.append(`
-                    <div class="card review-card mb-3">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <h5>${review.userName}</h5>
-                                <div class="rating-stars">
-                                    ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
-                                </div>
-                            </div>
-                            <p class="text-muted small">${new Date(review.createdAt).toLocaleDateString()}</p>
-                            <p>${review.comment}</p>
-                        </div>
-                    </div>
-                `);
-                });
-            },
-            error: function() {
-                $('#reviews-container').html(`
-                <div class="alert alert-warning">
-                    Could not load reviews
-                </div>
-            `);
             }
         });
     }
@@ -262,6 +906,7 @@
             // Show loading state
             submitText.hide();
             spinner.show();
+            submitBtn.prop('disabled', true);
 
             // 1. Get token and decode email
             const token = localStorage.getItem("token");
@@ -281,6 +926,13 @@
 
             if (!bookingDate || !bookingTime) {
                 throw new Error("Please select both date and time");
+            }
+
+            // Check if selected date is in the past
+            const selectedDate = new Date(`${bookingDate}T${bookingTime}`);
+            const now = new Date();
+            if (selectedDate < now) {
+                throw new Error("Please select a future date and time");
             }
 
             // 3. Get customer ID from email
@@ -313,7 +965,28 @@
                 customerId: customerId
             };
 
-            // 5. Submit booking
+            // 5. Ask for confirmation before submitting
+            const confirmResult = await Swal.fire({
+                title: 'Confirm Booking',
+                text: 'Are you sure you want to book this service?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, book it!',
+                cancelButtonText: 'Cancel'
+            });
+
+            if (!confirmResult.isConfirmed) {
+                // User clicked cancel, don't proceed with booking
+                $('#bookingForm')[0].reset();
+                submitText.show();
+                spinner.hide();
+                submitBtn.prop('disabled', false);
+                return;
+            }
+
+// 6. Submit booking after confirmation
             const bookingResponse = await $.ajax({
                 url: 'http://localhost:8080/api/v1/bookings/add',
                 method: 'POST',
@@ -321,15 +994,24 @@
                 data: JSON.stringify(bookingData),
                 headers: {
                     "Authorization": "Bearer " + token
-                },
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(xhr) {
-                    console.error('Error fetching provider ID:', xhr.responseText);
                 }
             });
 
+// Show success message
+            await Swal.fire({
+                icon: 'success',
+                title: 'Booking Successful!',
+                text: 'Your booking has been submitted successfully',
+                showConfirmButton: true,
+                timer: 3000,
+                timerProgressBar: true,
+                willClose: () => {
+                    window.location.href = "../view/mybookings.html";
+                }
+            });
+
+// Reset form (though we're redirecting so this might not be necessary)
+            $('#bookingForm')[0].reset();
 
         } catch (error) {
             console.error("Booking error:", error);
@@ -339,7 +1021,14 @@
             if (error.status === 401) {
                 errorMessage = "Session expired. Please login again.";
                 localStorage.removeItem("token");
-                window.location.href = "/login";
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Session Expired',
+                    text: errorMessage,
+                    willClose: () => {
+                        window.location.href = "/login";
+                    }
+                });
                 return;
             }
 
@@ -347,11 +1036,16 @@
                 errorMessage = error.responseJSON.message;
             }
 
-            alert(errorMessage);
+            await Swal.fire({
+                icon: 'error',
+                title: 'Booking Failed',
+                text: errorMessage
+            });
         } finally {
             // Always restore button state
             submitText.show();
             spinner.hide();
+            submitBtn.prop('disabled', false);
         }
     }
 </script>

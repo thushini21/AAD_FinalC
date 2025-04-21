@@ -4,7 +4,8 @@ package com.example.salooniveryvells.Controller;
 import com.example.salooniveryvells.Dto.PaymentDTO;
 import com.example.salooniveryvells.Dto.ResponseDTO;
 import com.example.salooniveryvells.Service.PaymentService;
-import com.example.salooniveryvells.Util.VarList;
+import com.example.salooniveryvells.Utill.VarList;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,7 @@ public class PaymentController {
 
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity<ResponseDTO> createPayment(@RequestBody PaymentDTO paymentDTO) {
-        System.out.println("///////////////////////////////////////" + paymentDTO);
+    public ResponseEntity<ResponseDTO> createPayment(@Valid  @RequestBody PaymentDTO paymentDTO) {
         ResponseDTO responseDTO = paymentService.createPayment(paymentDTO);
         return ResponseEntity.ok()
                 .body(new ResponseDTO(VarList.OK, "Success", responseDTO));
@@ -39,12 +39,12 @@ public class PaymentController {
     }
 
     @GetMapping("/{paymentId}")
-    public ResponseEntity<ResponseDTO> getPaymentById(@PathVariable int paymentId) {
+    public ResponseEntity<ResponseDTO> getPaymentById(@Valid @PathVariable int paymentId) {
         ResponseDTO response = paymentService.getPaymentById(paymentId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
     @GetMapping("get-by-booking/{bookingId}")
-    public ResponseEntity<ResponseDTO> getPaymentByBookingId(@PathVariable int bookingId) {
+    public ResponseEntity<ResponseDTO> getPaymentByBookingId(@Valid @PathVariable int bookingId) {
         System.out.println(bookingId);
         System.out.println("-----------------------------------------");
         try {
@@ -59,7 +59,7 @@ public class PaymentController {
     }
 
     @PutMapping("/{paymentId}")
-    public ResponseEntity<ResponseDTO> updatePayment(@PathVariable int paymentId, @RequestBody PaymentDTO paymentDTO) {
+    public ResponseEntity<ResponseDTO> updatePayment(@Valid @PathVariable int paymentId, @RequestBody PaymentDTO paymentDTO) {
         ResponseDTO responseDTO = paymentService.updatePayment(paymentId, paymentDTO);
         return ResponseEntity.ok()
                 .body(new ResponseDTO(VarList.OK, "Success", responseDTO));
@@ -71,20 +71,20 @@ public class PaymentController {
             @RequestBody Map<String, Object> updates) {
 
         try {
-            // Manually parse the fields from the map
+
             Double finalAmount = updates.containsKey("finalAmount") ?
                     Double.valueOf(updates.get("finalAmount").toString()) : null;
             String status = updates.containsKey("status") ?
                     updates.get("status").toString() : null;
 
-            // Handle date parsing manually
+
             LocalDateTime paymentDate = null;
             if (updates.containsKey("paymentDate")) {
                 String dateStr = updates.get("paymentDate").toString();
                 paymentDate = LocalDateTime.parse(dateStr, DateTimeFormatter.ISO_DATE_TIME);
             }
 
-            // Create a PaymentDTO with the parsed values
+
             PaymentDTO paymentDTO = new PaymentDTO();
             paymentDTO.setFinalAmount(finalAmount);
             paymentDTO.setStatus(status);
@@ -108,7 +108,7 @@ public class PaymentController {
     }
 
     @DeleteMapping("/{paymentId}")
-    public ResponseEntity<ResponseDTO> deletePayment(@PathVariable int paymentId) {
+    public ResponseEntity<ResponseDTO> deletePayment(@Valid @PathVariable int paymentId) {
         ResponseDTO response = paymentService.deletePayment(paymentId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
