@@ -21,7 +21,7 @@ body {
 
 /* Navbar Styles */
 .navbar {
-    background: linear-gradient(10deg, #FFD700,#e3c10e);
+    background: linear-gradient(10deg, #5b3e26, #73521f);
     color: black;
     padding: 15px 0;
     position: sticky;
@@ -138,7 +138,7 @@ body {
 
 .stat-card i {
     font-size: 2.5rem;
-    color: #FFD700;
+    color: #986a2e;
     margin-bottom: 15px;
 }
 
@@ -195,7 +195,7 @@ th, td {
 }
 
 th {
-    background-color: #FFD700;
+    background-color: #bb7a46;
     color: white;
     font-weight: 500;
 }
@@ -212,7 +212,7 @@ tr:hover {
 }
 
 .status.pending {
-    background-color: #f39c12;
+    background-color: #83662e;
     color: white;
 }
 
@@ -342,7 +342,7 @@ tr:hover {
     bottom: 0;
     width: 40px;
     height: 2px;
-    background-color: #FFD700;
+    background-color: #986a2e;
 }
 
 .footer-section ul {
@@ -396,7 +396,7 @@ tr:hover {
 }
 
 .social-links a:hover {
-    background-color: #FFD700;
+    background-color: #9b6d30;
     color: #2c3e50;
     transform: translateY(-3px);
 }
@@ -419,7 +419,7 @@ tr:hover {
 }
 
 .footer-legal a:hover {
-    color: #FFD700;
+    color: #6e4f21;
 }
 
 .footer-legal span {

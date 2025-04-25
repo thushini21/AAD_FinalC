@@ -16,7 +16,7 @@ body {
 
 /* Navbar */
 .navbar {
-    background: linear-gradient(10deg, #FFD700,#e3c10e);
+    background: linear-gradient(10deg, #5b3e26, #734f1c);
     transition: all 0.3s ease-in-out;
     color: #000;
     padding: 0.5rem 0;
@@ -169,7 +169,7 @@ body {
 
 .service-card i {
     font-size: 40px;
-    color: #FFD700;
+    color: #6c5237;
     margin-bottom: 15px;
 }
 

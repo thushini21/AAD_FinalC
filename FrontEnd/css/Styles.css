@@ -16,7 +16,7 @@ body {
 
 /* Navbar */
 .navbar {
-    background: linear-gradient(10deg, #c7894b, #e38e0e);
+    background: linear-gradient(10deg, #6c5237, #a26b4a);
     transition: all 0.3s ease-in-out;
     color: #000;
     padding: 0.5rem 0;
@@ -360,7 +360,7 @@ input:checked + .slider:before {
     bottom: 0;
     width: 40px;
     height: 2px;
-    background-color: #FFD700;
+    background-color: #a17b4a;
 }
 
 .footer-section ul {
@@ -374,7 +374,7 @@ input:checked + .slider:before {
 
 .footer-section ul li i {
     margin-right: 0.5rem;
-    color: #FFD700;
+    color: #704c29;
     width: 20px;
     text-align: center;
 }
@@ -387,7 +387,7 @@ input:checked + .slider:before {
 }
 
 .footer-section a:hover {
-    color: #FFD700;
+    color: #bb7a46;
 }
 
 .footer-bottom {
@@ -414,7 +414,7 @@ input:checked + .slider:before {
 }
 
 .social-links a:hover {
-    background-color: #FFD700;
+    background-color: #83662e;
     color: #2c3e50;
     transform: translateY(-3px);
 }
@@ -437,7 +437,7 @@ input:checked + .slider:before {
 }
 
 .footer-legal a:hover {
-    color: #FFD700;
+    color: #9b6d30;
 }
 
 .footer-legal span {
@@ -793,7 +793,7 @@ input:checked + .slider:before {
 
 .contact-info ul li i {
     font-size: 1.2rem;
-    color: #FFD700;
+    color: #986a2e;
 }
 
 .map {
@@ -904,7 +904,7 @@ input:checked + .slider:before {
 
 .service-card:hover i {
     transform: scale(1.2);
-    color: #FFD700;
+    color: #a97f2f;
 }
 
 /* ================== */
@@ -982,7 +982,7 @@ input:checked + .slider:before {
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #FFD700;
+    border-color: #a86f2f;
     box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
 }
 
@@ -992,7 +992,7 @@ input:checked + .slider:before {
 
 .contact-info ul li:hover i {
     transform: scale(1.2);
-    color: #FFD700;
+    color: #986c34;
 }
 
 /* ================= */
@@ -1008,7 +1008,7 @@ input:checked + .slider:before {
 
 .social-links a:hover i {
     transform: translateY(-5px) scale(1.2);
-    color: #FFD700;
+    color: #b48139;
 }
 
 /* ================= */
