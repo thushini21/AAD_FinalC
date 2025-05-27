@@ -1,5 +1,10 @@
+
+https://github.com/user-attachments/assets/453a46b2-0a6b-47be-a8ee-b5f8e5378e32
 Ivory Veils Salon is a full-featured beauty salon web application designed to streamline salon operations and enhance the customer experience. The system supports user registration, service browsing, appointment bookings, and role-based access for Admins, Managers, and Customers.
 
+![Screenshot 2025-05-27 124911](https://github.com/user-attachments/assets/e9ab06c4-1385-4b84-8c49-dd7aa511e924)
+![Screenshot 2025-05-27 125056](https://github.com/user-attachments/assets/32aa4c06-804d-4587-872b-6502f5c02195)
+![Screenshot 2025-05-27 125226](https://github.com/user-attachments/assets/6e0a9b97-9172-439c-9d57-80b84007dba0)
 ![Screenshot 2025-04-16 150703](https://github.com/user-attachments/assets/083c7e67-68a6-4ad0-bad6-9731a94083e2)
 ![Screenshot 2025-04-16 161403](https://github.com/user-attachments/assets/28c71714-5b99-497d-a3c8-dfc052e07e04)
 ![Screenshot 2025-04-16 162915](https://github.com/user-attachments/assets/324c5688-fee9-4c51-a1ee-35b1d9c9fcc9)
