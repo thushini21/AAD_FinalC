@@ -190,7 +190,7 @@ async function displayBookings(bookings) {
                                 </div>
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="bi bi-clock me-2"></i>
-                                    <span>Hourly Rate: Rs.${service.hourlyRate.toFixed(2)}</span>
+                                    <span>Additional Charge: Rs.${service.hourlyRate.toFixed(2)}</span>
                                 </div>
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="bi bi-clock-history me-2"></i>
