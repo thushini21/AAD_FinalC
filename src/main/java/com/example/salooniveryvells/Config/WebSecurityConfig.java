@@ -30,8 +30,7 @@ public class WebSecurityConfig {
     private UserServiceImpl userService;
 
     @Autowired
-    private JwtFilter jwtFilter;
-
+private JwtFilter jwtFilter;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -82,12 +81,13 @@ public class WebSecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:63342");
+        config.addAllowedOrigin("http://localhost:63343"); // <-- frontend port ekata align karala
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
 
 
 
